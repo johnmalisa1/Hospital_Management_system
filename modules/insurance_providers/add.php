@@ -5,11 +5,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/InsuranceProvider.php';
+
+$insuranceProvider = new InsuranceProvider($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("INSERT INTO insurance_providers (provider_name, contact) VALUES (?, ?)");
-    $stmt->bind_param("ss", $_POST['provider_name'], $_POST['contact']);
-    $stmt->execute();
+    $insuranceProvider->addProvider($_POST['provider_name'], $_POST['contact']);
     header("Location: view.php");
 }
 ?>

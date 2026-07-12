@@ -6,8 +6,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/InsuranceProvider.php';
 
-$result = $conn->query("SELECT * FROM insurance_providers ORDER BY provider_id DESC");
+$insuranceProvider = new InsuranceProvider($db);
+$result = $insuranceProvider->getAllProviders();
 ?>
 
 <style>

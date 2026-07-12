@@ -6,14 +6,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/PatientInsurance.php';
 
-$result = $conn->query("
-    SELECT pi.*, p.name AS patient_name, ip.provider_name 
-    FROM patient_insurance pi
-    JOIN patients p ON pi.patient_id = p.patient_id
-    JOIN insurance_providers ip ON pi.provider_id = ip.provider_id
-    ORDER BY pi.id DESC
-");
+$patientInsurance = new PatientInsurance($db);
+$result = $patientInsurance->getAllInsurance();
 ?>
 
 <style>

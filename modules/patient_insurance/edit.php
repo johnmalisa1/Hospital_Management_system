@@ -5,18 +5,26 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/InsuranceProvider.php';
+require_once __DIR__ . '/../../includes/classes/PatientInsurance.php';
+
+$patientInsurance = new PatientInsurance($db);
+$insuranceProvider = new InsuranceProvider($db);
 
 $id = $_GET['id'];
-$result = $conn->query("SELECT * FROM patient_insurance WHERE id = $id");
-$row = $result->fetch_assoc();
+$row = $patientInsurance->getInsuranceById($id);
 
 $patients = $conn->query("SELECT * FROM patients");
-$providers = $conn->query("SELECT * FROM insurance_providers");
+$providers = $insuranceProvider->getAllProviders();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("UPDATE patient_insurance SET patient_id = ?, provider_id = ?, policy_number = ?, valid_until = ? WHERE id = ?");
-    $stmt->bind_param("iissi", $_POST['patient_id'], $_POST['provider_id'], $_POST['policy_number'], $_POST['valid_until'], $id);
-    $stmt->execute();
+    $patientInsurance->updateInsurance(
+        $id,
+        $_POST['patient_id'],
+        $_POST['provider_id'],
+        $_POST['policy_number'],
+        $_POST['valid_until']
+    );
     header("Location: view.php");
 }
 ?>

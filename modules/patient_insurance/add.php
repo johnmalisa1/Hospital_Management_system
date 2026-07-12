@@ -5,14 +5,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/InsuranceProvider.php';
+require_once __DIR__ . '/../../includes/classes/PatientInsurance.php';
+
+$patientInsurance = new PatientInsurance($db);
+$insuranceProvider = new InsuranceProvider($db);
 
 $patients = $conn->query("SELECT * FROM patients");
-$providers = $conn->query("SELECT * FROM insurance_providers");
+$providers = $insuranceProvider->getAllProviders();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("INSERT INTO patient_insurance (patient_id, provider_id, policy_number, valid_until) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("iiss", $_POST['patient_id'], $_POST['provider_id'], $_POST['policy_number'], $_POST['valid_until']);
-    $stmt->execute();
+    $patientInsurance->addInsurance(
+        $_POST['patient_id'],
+        $_POST['provider_id'],
+        $_POST['policy_number'],
+        $_POST['valid_until']
+    );
     header("Location: view.php");
 }
 ?>

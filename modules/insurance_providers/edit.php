@@ -5,15 +5,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/InsuranceProvider.php';
 
+$insuranceProvider = new InsuranceProvider($db);
 $id = $_GET['id'];
-$result = $conn->query("SELECT * FROM insurance_providers WHERE provider_id = $id");
-$row = $result->fetch_assoc();
+$row = $insuranceProvider->getProviderById($id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("UPDATE insurance_providers SET provider_name = ?, contact = ? WHERE provider_id = ?");
-    $stmt->bind_param("ssi", $_POST['provider_name'], $_POST['contact'], $id);
-    $stmt->execute();
+    $insuranceProvider->updateProvider($id, $_POST['provider_name'], $_POST['contact']);
     header("Location: view.php");
 }
 ?>
