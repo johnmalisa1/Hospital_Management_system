@@ -21,9 +21,9 @@ include "../../templates/header.php";
         </tr>
 
         <?php
-        $sql = "SELECT n.*, w.name AS ward_name
-                FROM nurses n
-                LEFT JOIN wards w ON n.assigned_ward = w.ward_id";
+        $sql = "SELECT n.*, w.ward_name AS ward_name
+        FROM nurses n
+        LEFT JOIN wards w ON n.assigned_ward = w.ward_id";
         $result = $conn->query($sql);
         while ($row = $result->fetch_assoc()):
         ?>
