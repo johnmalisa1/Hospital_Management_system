@@ -7,11 +7,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 include "../../config/db.php";
 require_once __DIR__ . '/../../includes/classes/InsuranceProvider.php';
 require_once __DIR__ . '/../../includes/classes/PatientInsurance.php';
+require_once __DIR__ . '/../../includes/classes/Patient.php';
 
 $patientInsurance = new PatientInsurance($db);
 $insuranceProvider = new InsuranceProvider($db);
 
-$patients = $conn->query("SELECT * FROM patients");
+$patient = new Patient($db);
+$patients = $patient->getAllPatients();
 $providers = $insuranceProvider->getAllProviders();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

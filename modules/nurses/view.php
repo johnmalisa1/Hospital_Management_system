@@ -24,7 +24,7 @@ include "../../templates/header.php";
         $sql = "SELECT n.*, w.ward_name AS ward_name
         FROM nurses n
         LEFT JOIN wards w ON n.assigned_ward = w.ward_id";
-        $result = $conn->query($sql);
+        $result = $db->getConnection()->query($sql);
         while ($row = $result->fetch_assoc()):
         ?>
         <tr>

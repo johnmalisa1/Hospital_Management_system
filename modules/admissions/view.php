@@ -17,13 +17,7 @@ $result = $admission->getAllAdmissions();
                 <th>ID</th><th>Patient</th><th>Room</th><th>Date</th><th>Actions</th>
             </tr>
             <?php
-            $sql = "SELECT a.admission_id, p.name AS patient_name, r.room_number, a.admission_date
-                    FROM admissions a
-                    JOIN patients p ON a.patient_id = p.patient_id
-                    JOIN rooms r ON a.room_id = r.room_id
-                    ORDER BY a.admission_id DESC";
-            $result = $conn->query($sql);
-            while ($row = $result->fetch_assoc()) {
+                        while ($row = $result->fetch_assoc()) {
                 echo "<tr>
                     <td>{$row['admission_id']}</td>
                     <td>{$row['patient_name']}</td>

@@ -16,9 +16,7 @@ $res = $notification->getAllNotifications();
         <th>ID</th><th>User</th><th>Message</th><th>Read?</th><th>Created</th><th>Action</th>
     </tr>
     <?php
-    $sql = "SELECT n.*, u.username FROM notifications n JOIN users u ON n.user_id = u.id ORDER BY n.id DESC";
-    $res = $conn->query($sql);
-    while ($row = $res->fetch_assoc()):
+        while ($row = $res->fetch_assoc()):
     ?>
     <tr>
         <td><?= $row['id'] ?></td>

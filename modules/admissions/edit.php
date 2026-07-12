@@ -3,8 +3,10 @@ session_start();
 include "../../config/db.php";
 include "../../navbar.php";
 require_once __DIR__ . '/../../includes/classes/Admission.php';
+require_once __DIR__ . '/../../includes/classes/Patient.php';
 
 $admission = new Admission($db);
+ $patient = new Patient($db);
 
 $id = $_GET['id'];
 $row = $admission->getAdmissionById($id);
@@ -26,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <label>Patient:</label>
     <select name="patient_id" required style="width:100%; padding:10px;">
         <?php
-        $patients = $conn->query("SELECT * FROM patients");
+        $patients = $patient->getAllPatients();
         while ($p = $patients->fetch_assoc()) {
             $sel = $p['patient_id'] == $row['patient_id'] ? "selected" : "";
             echo "<option value='{$p['patient_id']}' $sel>{$p['name']}</option>";
@@ -37,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <label>Room:</label>
     <select name="room_id" required style="width:100%; padding:10px;">
         <?php
-        $rooms = $conn->query("SELECT * FROM rooms");
+        $rooms = $admission->getAllRooms();
         while ($r = $rooms->fetch_assoc()) {
             $sel = $r['room_id'] == $row['room_id'] ? "selected" : "";
             echo "<option value='{$r['room_id']}' $sel>{$r['room_number']}</option>";

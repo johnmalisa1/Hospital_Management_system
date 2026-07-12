@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
 }
 
-$users = $conn->query("SELECT id, username FROM users");
+$users = $db->getConnection()->query("SELECT id, username FROM users");
 ?>
 <h2 style="text-align:center;">Send Notification</h2>
 <form method="POST" style="width:400px;margin:auto;padding:30px;background:white;border-radius:10px;box-shadow:0 0 10px #ccc;">

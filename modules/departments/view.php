@@ -61,7 +61,6 @@ $res = $department->getAllDepartments();
     </thead>
     <tbody>
         <?php
-        $res = $conn->query("SELECT * FROM departments ORDER BY department_id DESC");
         while ($row = $res->fetch_assoc()):
         ?>
         <tr>
