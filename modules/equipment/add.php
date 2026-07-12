@@ -1,0 +1,52 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../../login.php");
+    exit();
+}
+include "../../config/db.php";
+include "../../templates/header.php";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'];
+    $type = $_POST['type'];
+    $quantity = $_POST['quantity'];
+    $status = $_POST['status'];
+    $purchase_date = $_POST['purchase_date'];
+
+    $stmt = $conn->prepare("INSERT INTO equipment (name, type, quantity, status, purchase_date) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiss", $name, $type, $quantity, $status, $purchase_date);
+    $stmt->execute();
+
+    header("Location: view.php");
+    exit();
+}
+?>
+
+<div class="main-content">
+    <h2 class="page-title">➕ Add Equipment</h2>
+    <div class="form-container">
+        <form method="POST">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Type:</label>
+            <input type="text" name="type" required>
+
+            <label>Quantity:</label>
+            <input type="number" name="quantity" required>
+
+            <label>Status:</label>
+            <select name="status">
+                <option value="Operational">Operational</option>
+                <option value="Under Maintenance">Under Maintenance</option>
+                <option value="Out of Service">Out of Service</option>
+            </select>
+
+            <label>Purchase Date:</label>
+            <input type="date" name="purchase_date" required>
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
