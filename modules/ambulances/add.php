@@ -6,16 +6,17 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Ambulance.php';
+
+$ambulance = new Ambulance($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $vehicle_number = $_POST['vehicle_number'];
-    $driver_name = $_POST['driver_name'];
-    $contact_number = $_POST['contact_number'];
-    $availability = $_POST['availability'];
-
-    $stmt = $conn->prepare("INSERT INTO ambulances (vehicle_number, driver_name, contact_number, availability) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $vehicle_number, $driver_name, $contact_number, $availability);
-    $stmt->execute();
+    $ambulance->addAmbulance(
+        $_POST['vehicle_number'],
+        $_POST['driver_name'],
+        $_POST['contact_number'],
+        $_POST['availability']
+    );
 
     header("Location: view.php");
     exit();

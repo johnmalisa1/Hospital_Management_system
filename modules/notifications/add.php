@@ -2,14 +2,15 @@
 session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: ../../login.php"); exit(); }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/Notification.php';
+
+$notification = new Notification($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id = $_POST['user_id'];
-    $message = $_POST['message'];
-
-    $stmt = $conn->prepare("INSERT INTO notifications (user_id, message) VALUES (?, ?)");
-    $stmt->bind_param("is", $user_id, $message);
-    $stmt->execute();
+    $notification->addNotification(
+        $_POST['user_id'],
+        $_POST['message']
+    );
     header("Location: view.php");
 }
 

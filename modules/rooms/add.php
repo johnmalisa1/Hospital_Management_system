@@ -2,14 +2,12 @@
 session_start();
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Room.php';
+
+$room = new Room($db);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $room_number = $_POST['room_number'];
-    $is_available = $_POST['is_available'];
-
-    $stmt = $conn->prepare("INSERT INTO rooms (room_number, is_available) VALUES (?, ?)");
-    $stmt->bind_param("si", $room_number, $is_available);
-    $stmt->execute();
+    $room->addRoom($_POST['room_number'], $_POST['is_available']);
     header("Location: view.php");
     exit();
 }

@@ -3,6 +3,10 @@ session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: ../../login.php"); exit(); }
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Notification.php';
+
+$notification = new Notification($db);
+$res = $notification->getAllNotifications();
 ?>
 
 <h2 style="text-align:center;">User Notifications</h2>

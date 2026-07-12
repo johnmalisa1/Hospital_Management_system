@@ -5,15 +5,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/Ward.php';
+
+$ward = new Ward($db);
 
 $id = $_GET['id'];
-$result = $conn->query("SELECT * FROM wards WHERE ward_id = $id");
-$row = $result->fetch_assoc();
+$row = $ward->getWardById($id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("UPDATE wards SET ward_name = ?, description = ? WHERE ward_id = ?");
-    $stmt->bind_param("ssi", $_POST['ward_name'], $_POST['description'], $id);
-    $stmt->execute();
+    $ward->updateWard($id, $_POST['ward_name'], $_POST['description']);
     header("Location: view.php");
 }
 ?>

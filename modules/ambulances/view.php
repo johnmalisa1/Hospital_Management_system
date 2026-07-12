@@ -6,6 +6,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Ambulance.php';
+
+$ambulance = new Ambulance($db);
+$result = $ambulance->getAllAmbulances();
 ?>
 
 <div class="main-content">
@@ -25,7 +29,6 @@ include "../../templates/header.php";
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM ambulances ORDER BY ambulance_id DESC");
         while ($row = $result->fetch_assoc()):
         ?>
         <tr>

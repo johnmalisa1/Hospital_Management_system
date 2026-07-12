@@ -6,17 +6,18 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Equipment.php';
+
+$equipment = new Equipment($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $type = $_POST['type'];
-    $quantity = $_POST['quantity'];
-    $status = $_POST['status'];
-    $purchase_date = $_POST['purchase_date'];
-
-    $stmt = $conn->prepare("INSERT INTO equipment (name, type, quantity, status, purchase_date) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssiss", $name, $type, $quantity, $status, $purchase_date);
-    $stmt->execute();
+    $equipment->addEquipment(
+        $_POST['name'],
+        $_POST['type'],
+        $_POST['quantity'],
+        $_POST['status'],
+        $_POST['purchase_date']
+    );
 
     header("Location: view.php");
     exit();

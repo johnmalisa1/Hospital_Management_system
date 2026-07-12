@@ -5,18 +5,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/Department.php';
+
+$department = new Department($db);
 
 $id = $_GET['id'];
-$res = $conn->prepare("SELECT * FROM departments WHERE department_id = ?");
-$res->bind_param("i", $id);
-$res->execute();
-$dept = $res->get_result()->fetch_assoc();
+$dept = $department->getDepartmentById($id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $stmt = $conn->prepare("UPDATE departments SET name = ? WHERE department_id = ?");
-    $stmt->bind_param("si", $name, $id);
-    $stmt->execute();
+    $department->updateDepartment($id, $_POST['name']);
     header("Location: view.php");
     exit();
 }

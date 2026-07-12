@@ -6,6 +6,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Department.php';
+
+$department = new Department($db);
+$res = $department->getAllDepartments();
 ?>
 
 <h2 style="text-align:center;">Hospital Departments</h2>

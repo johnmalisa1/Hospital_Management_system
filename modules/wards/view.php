@@ -6,8 +6,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Ward.php';
 
-$result = $conn->query("SELECT * FROM wards ORDER BY ward_id DESC");
+$ward = new Ward($db);
+$result = $ward->getAllWards();
 ?>
 
 <style>

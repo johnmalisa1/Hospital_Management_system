@@ -2,6 +2,10 @@
 session_start();
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Room.php';
+
+$room = new Room($db);
+$result = $room->getAllRooms();
 ?>
 
 <div style="margin-left:230px; padding:20px; max-width:calc(100% - 230px);">
@@ -13,7 +17,6 @@ include "../../navbar.php";
                 <th>ID</th><th>Room Number</th><th>Available</th><th>Actions</th>
             </tr>
             <?php
-            $result = $conn->query("SELECT * FROM rooms ORDER BY room_id DESC");
             while ($row = $result->fetch_assoc()) {
                 $availability = $row['is_available'] ? "Yes" : "No";
                 echo "<tr>

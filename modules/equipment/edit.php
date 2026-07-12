@@ -6,20 +6,22 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Equipment.php';
+
+$equipment = new Equipment($db);
 
 $id = $_GET['id'];
-$row = $conn->query("SELECT * FROM equipment WHERE equipment_id = $id")->fetch_assoc();
+$row = $equipment->getEquipmentById($id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $type = $_POST['type'];
-    $quantity = $_POST['quantity'];
-    $status = $_POST['status'];
-    $purchase_date = $_POST['purchase_date'];
-
-    $stmt = $conn->prepare("UPDATE equipment SET name=?, type=?, quantity=?, status=?, purchase_date=? WHERE equipment_id=?");
-    $stmt->bind_param("ssissi", $name, $type, $quantity, $status, $purchase_date, $id);
-    $stmt->execute();
+    $equipment->updateEquipment(
+        $id,
+        $_POST['name'],
+        $_POST['type'],
+        $_POST['quantity'],
+        $_POST['status'],
+        $_POST['purchase_date']
+    );
 
     header("Location: view.php");
     exit();

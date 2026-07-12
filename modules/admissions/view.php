@@ -2,6 +2,10 @@
 session_start();
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Admission.php';
+
+$admission = new Admission($db);
+$result = $admission->getAllAdmissions();
 ?>
 
 <div style="margin-left:230px; padding:20px; max-width:calc(100% - 230px);">

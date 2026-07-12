@@ -2,18 +2,20 @@
 session_start();
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Admission.php';
+
+$admission = new Admission($db);
 
 $id = $_GET['id'];
-$row = $conn->query("SELECT * FROM admissions WHERE admission_id = $id")->fetch_assoc();
+$row = $admission->getAdmissionById($id);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $patient_id = $_POST['patient_id'];
-    $room_id = $_POST['room_id'];
-    $date = $_POST['admission_date'];
-
-    $stmt = $conn->prepare("UPDATE admissions SET patient_id=?, room_id=?, admission_date=? WHERE admission_id=?");
-    $stmt->bind_param("iisi", $patient_id, $room_id, $date, $id);
-    $stmt->execute();
+    $admission->updateAdmission(
+        $id,
+        $_POST['patient_id'],
+        $_POST['room_id'],
+        $_POST['admission_date']
+    );
     header("Location: view.php");
     exit();
 }

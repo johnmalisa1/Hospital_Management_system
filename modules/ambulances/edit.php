@@ -6,19 +6,21 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Ambulance.php';
+
+$ambulance = new Ambulance($db);
 
 $id = $_GET['id'];
-$row = $conn->query("SELECT * FROM ambulances WHERE ambulance_id = $id")->fetch_assoc();
+$row = $ambulance->getAmbulanceById($id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $vehicle_number = $_POST['vehicle_number'];
-    $driver_name = $_POST['driver_name'];
-    $contact_number = $_POST['contact_number'];
-    $availability = $_POST['availability'];
-
-    $stmt = $conn->prepare("UPDATE ambulances SET vehicle_number=?, driver_name=?, contact_number=?, availability=? WHERE ambulance_id=?");
-    $stmt->bind_param("ssssi", $vehicle_number, $driver_name, $contact_number, $availability, $id);
-    $stmt->execute();
+    $ambulance->updateAmbulance(
+        $id,
+        $_POST['vehicle_number'],
+        $_POST['driver_name'],
+        $_POST['contact_number'],
+        $_POST['availability']
+    );
 
     header("Location: view.php");
     exit();

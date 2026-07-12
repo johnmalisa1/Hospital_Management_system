@@ -2,17 +2,15 @@
 session_start();
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Room.php';
+
+$room = new Room($db);
 
 $id = $_GET['id'];
-$row = $conn->query("SELECT * FROM rooms WHERE room_id = $id")->fetch_assoc();
+$row = $room->getRoomById($id);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $room_number = $_POST['room_number'];
-    $is_available = $_POST['is_available'];
-
-    $stmt = $conn->prepare("UPDATE rooms SET room_number=?, is_available=? WHERE room_id=?");
-    $stmt->bind_param("sii", $room_number, $is_available, $id);
-    $stmt->execute();
+    $room->updateRoom($id, $_POST['room_number'], $_POST['is_available']);
     header("Location: view.php");
     exit();
 }

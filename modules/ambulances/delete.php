@@ -1,6 +1,13 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../../login.php");
+    exit();
+}
 include "../../config/db.php";
-$id = $_GET['id'];
-$conn->query("DELETE FROM ambulances WHERE ambulance_id = $id");
+require_once __DIR__ . '/../../includes/classes/Ambulance.php';
+
+$ambulance = new Ambulance($db);
+$ambulance->deleteAmbulance($_GET['id']);
 header("Location: view.php");
 exit();

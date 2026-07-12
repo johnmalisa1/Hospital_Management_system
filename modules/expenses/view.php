@@ -2,6 +2,10 @@
 session_start();
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Expense.php';
+
+$expense = new Expense($db);
+$result = $expense->getAllExpenses();
 ?>
 
 <div class="main-content">
@@ -21,7 +25,6 @@ include "../../templates/header.php";
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM expenses ORDER BY expense_date DESC");
         while ($row = $result->fetch_assoc()):
         ?>
         <tr>

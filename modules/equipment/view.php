@@ -6,7 +6,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Equipment.php';
+
+$equipment = new Equipment($db);
+$result = $equipment->getAllEquipment();
 ?>
+
 
 <div class="main-content">
     <h2 class="page-title">🏥 Equipment & Assets</h2>
@@ -26,7 +31,6 @@ include "../../templates/header.php";
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM equipment ORDER BY purchase_date DESC");
         while ($row = $result->fetch_assoc()):
         ?>
         <tr>

@@ -5,9 +5,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/Ward.php';
 
-$id = $_GET['id'];
-$conn->query("DELETE FROM wards WHERE ward_id = $id");
+$ward = new Ward($db);
 
+$ward->deleteWard($_GET['id']);
 header("Location: view.php");
 exit();

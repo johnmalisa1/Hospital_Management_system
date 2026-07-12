@@ -6,6 +6,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/BloodBank.php';
+
+$bloodBank = new BloodBank($db);
+$result = $bloodBank->getAllUnits();
 ?>
 
 <div class="main-content">
@@ -27,7 +31,6 @@ include "../../templates/header.php";
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM blood_bank ORDER BY date_donated DESC");
         while ($row = $result->fetch_assoc()):
         ?>
         <tr>

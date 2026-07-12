@@ -2,16 +2,17 @@
 session_start();
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Expense.php';
+
+$expense = new Expense($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $category = $_POST['category'];
-    $amount = $_POST['amount'];
-    $expense_date = $_POST['expense_date'];
-    $notes = $_POST['notes'];
-
-    $stmt = $conn->prepare("INSERT INTO expenses (category, amount, expense_date, notes) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sdss", $category, $amount, $expense_date, $notes);
-    $stmt->execute();
+    $expense->addExpense(
+        $_POST['category'],
+        $_POST['amount'],
+        $_POST['expense_date'],
+        $_POST['notes']
+    );
     header("Location: view.php");
     exit();
 }

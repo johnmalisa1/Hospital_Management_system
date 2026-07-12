@@ -6,23 +6,25 @@ if (!isset($_SESSION['user_id'])) {
 }
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/BloodBank.php';
+
+$bloodBank = new BloodBank($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $blood_type = $_POST['blood_type'];
-    $quantity = $_POST['quantity'];
-    $donor_name = $_POST['donor_name'];
-    $date_donated = $_POST['date_donated'];
-    $expiry_date = $_POST['expiry_date'];
-    $status = $_POST['status'];
-
-    $stmt = $conn->prepare("INSERT INTO blood_bank (blood_type, quantity, donor_name, date_donated, expiry_date, status) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sissss", $blood_type, $quantity, $donor_name, $date_donated, $expiry_date, $status);
-    $stmt->execute();
+    $bloodBank->addUnit(
+        $_POST['blood_type'],
+        $_POST['quantity'],
+        $_POST['donor_name'],
+        $_POST['date_donated'],
+        $_POST['expiry_date'],
+        $_POST['status']
+    );
 
     header("Location: view.php");
     exit();
 }
 ?>
+
 
 <div class="main-content">
     <h2 class="page-title">➕ Add Blood Unit</h2>

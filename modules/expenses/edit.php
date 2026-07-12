@@ -2,19 +2,21 @@
 session_start();
 include "../../config/db.php";
 include "../../templates/header.php";
+require_once __DIR__ . '/../../includes/classes/Expense.php';
+
+$expense = new Expense($db);
 
 $id = $_GET['id'];
-$row = $conn->query("SELECT * FROM expenses WHERE expense_id = $id")->fetch_assoc();
+$row = $expense->getExpenseById($id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $category = $_POST['category'];
-    $amount = $_POST['amount'];
-    $expense_date = $_POST['expense_date'];
-    $notes = $_POST['notes'];
-
-    $stmt = $conn->prepare("UPDATE expenses SET category=?, amount=?, expense_date=?, notes=? WHERE expense_id=?");
-    $stmt->bind_param("sdssi", $category, $amount, $expense_date, $notes, $id);
-    $stmt->execute();
+    $expense->updateExpense(
+        $id,
+        $_POST['category'],
+        $_POST['amount'],
+        $_POST['expense_date'],
+        $_POST['notes']
+    );
     header("Location: view.php");
     exit();
 }

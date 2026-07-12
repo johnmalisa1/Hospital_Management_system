@@ -5,11 +5,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/Ward.php';
+
+$ward = new Ward($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $conn->prepare("INSERT INTO wards (ward_name, description) VALUES (?, ?)");
-    $stmt->bind_param("ss", $_POST['ward_name'], $_POST['description']);
-    $stmt->execute();
+    $ward->addWard($_POST['ward_name'], $_POST['description']);
     header("Location: view.php");
 }
 ?>

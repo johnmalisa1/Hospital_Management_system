@@ -1,6 +1,9 @@
 <?php
+session_start();
 include "../../config/db.php";
-$id = $_GET['id'];
-$conn->query("DELETE FROM expenses WHERE expense_id = $id");
+require_once __DIR__ . '/../../includes/classes/Expense.php';
+
+$expense = new Expense($db);
+$expense->deleteExpense($_GET['id']);
 header("Location: view.php");
 exit();

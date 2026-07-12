@@ -5,14 +5,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
+require_once __DIR__ . '/../../includes/classes/Department.php';
+
+$department = new Department($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-
-    $stmt = $conn->prepare("INSERT INTO departments (name) VALUES (?)");
-    $stmt->bind_param("s", $name);
-    $stmt->execute();
-
+    $department->addDepartment(trim($_POST['name']));
     header("Location: view.php");
     exit();
 }

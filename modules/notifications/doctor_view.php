@@ -6,8 +6,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Doctor') {
 }
 include "../../config/db.php";
 include "../../navbar.php";
+require_once __DIR__ . '/../../includes/classes/Notification.php';
 
+$notification = new Notification($db);
 $user_id = $_SESSION['user_id'];
+$results = $notification->getNotificationsByUserId($user_id);
 ?>
 
 <h2 style="text-align:center;">Doctor Notifications</h2>
@@ -19,12 +22,6 @@ $user_id = $_SESSION['user_id'];
         <th>Created At</th>
     </tr>
     <?php
-    $sql = "SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $results = $stmt->get_result();
-
     while ($row = $results->fetch_assoc()):
     ?>
     <tr>
