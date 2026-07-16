@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../../login.php"); // <- CORRECT
@@ -7,14 +7,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 
 
 include "../../config/db.php";
-include "../../navbar.php";
+include "../../templates/header.php";
 ?>
 
-<div style="margin-left:230px; padding:20px; max-width:calc(100% - 230px);">
+
     <h2 style="text-align:center;">👥 System Users</h2>
 
-    <div style="overflow-x:auto;">
-        <table border="1" cellpadding="10" style="width:100%; background:white; box-shadow:0 0 10px #ccc; border-collapse:collapse;">
+    <div class="table-responsive">
+        <table>
             <tr style="background:#007bff; color:white;">
                 <th>ID</th><th>Username</th><th>Role</th><th>Actions</th>
             </tr>
@@ -35,4 +35,5 @@ include "../../navbar.php";
         </table>
     </div>
 </div>
+
 

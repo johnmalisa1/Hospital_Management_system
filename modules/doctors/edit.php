@@ -7,22 +7,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 
 include "../../config/db.php";
 require_once "../../includes/classes/Doctor.php";
-include "../../templates/header.php";
-
 $doctor = new Doctor($db);
-
 if (!isset($_GET['id'])) {
     die("Missing doctor ID.");
 }
-
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $row = $doctor->getDoctorById($id);
 if ($row === null) {
     die("Doctor not found.");
 }
-
 $departments = $doctor->getAllDepartments();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $doctor_name   = $_POST['doctor_name'];
     $specialization = $_POST['specialization'];
@@ -36,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to update doctor.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2 class="center-text">✏️ Edit Doctor</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to doctors</a>
+    <h2 class="center-text">?? Edit Doctor</h2>
 
     <?php if (isset($error)): ?>
         <p style="color:red; text-align:center;"><?= $error ?></p>

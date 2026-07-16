@@ -37,60 +37,67 @@ while ($row = $monthly_patients->fetch_assoc()) {
 <html>
 <head>
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="sidebar-page dashboard-bg">
     <div class="main-overlay">
 
-        <h2>🏥 Hospital Dashboard</h2>
-        <p style="text-align:center;">Welcome, <strong><?= $_SESSION['username']; ?></strong>!</p>
-
-        <div style="text-align: center; margin: 20px 0;">
-            <a href="modules/patients/add.php" class="quick-btn">+ Add Patient</a>
-            <a href="modules/appointments/add.php" class="quick-btn">+ Add Appointment</a>
-            <a href="modules/admissions/add.php" class="quick-btn">+ Add Admission</a>
-            <a href="modules/pharmacy/add.php" class="quick-btn">+ Add Medicine</a>
-            <a href="modules/lab_test/add.php" class="quick-btn">+ Add Lab Test</a>
-            <a href="modules/users/add.php" class="quick-btn">+ Add User</a>
+        <div class="page-header">
+            <div>
+                <h2><i class="fas fa-hospital"></i> Hospital Dashboard</h2>
+                <p style="text-align:left; color: var(--text-light); margin-top: 4px;">Welcome back, <strong style="color: var(--primary-dark);"><?= htmlspecialchars($_SESSION['username']); ?></strong></p>
+            </div>
         </div>
 
-        <button class="print-btn" onclick="window.print()">🖨️ Print Report</button>
+        <div class="quick-actions">
+            <a href="modules/patients/add.php" class="quick-btn"><i class="fas fa-user-plus"></i> Add Patient</a>
+            <a href="modules/appointments/add.php" class="quick-btn"><i class="fas fa-calendar-plus"></i> Add Appointment</a>
+            <a href="modules/admissions/add.php" class="quick-btn"><i class="fas fa-procedures"></i> Add Admission</a>
+            <a href="modules/pharmacy/add.php" class="quick-btn"><i class="fas fa-pills"></i> Add Medicine</a>
+            <a href="modules/lab_tests/add.php" class="quick-btn"><i class="fas fa-vials"></i> Add Lab Test</a>
+            <a href="modules/users/add.php" class="quick-btn"><i class="fas fa-user-cog"></i> Add User</a>
+        </div>
+
+        <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print Report</button>
 
         <div class="dashboard">
             <div class="card">
+                <div class="card-icon"><i class="fas fa-user-injured"></i></div>
                 <h3>Patients</h3>
                 <p><?= $patients ?></p>
             </div>
             <div class="card">
+                <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
                 <h3>Appointments</h3>
                 <p><?= $appointments ?></p>
             </div>
             <div class="card">
+                <div class="card-icon"><i class="fas fa-door-open"></i></div>
                 <h3>Available Rooms</h3>
                 <p><?= $available_rooms ?></p>
             </div>
             <div class="card">
+                <div class="card-icon"><i class="fas fa-money-bill-wave"></i></div>
                 <h3>Bills Paid (Tsh)</h3>
                 <p><?= number_format($bills_paid ?? 0, 2) ?></p>
             </div>
             <div class="card">
+                <div class="card-icon"><i class="fas fa-pills"></i></div>
                 <h3>Meds In Stock</h3>
                 <p><?= $meds ?></p>
             </div>
         </div>
 
-        <h3>📊 Charts</h3>
+        <h3><i class="fas fa-chart-bar"></i> Charts</h3>
         <div class="charts">
-            <div style="width:250px; height:200px;"><canvas id="lineChart"></canvas></div>
-            <div style="width:220px; height:200px;"><canvas id="billingChart"></canvas></div>
-            <div style="width:300px; height:220px;"><canvas id="monthlyPatientsChart"></canvas></div>
-            <div style="width:200px; height:200px;"><canvas id="roomChart"></canvas></div>
+            <div class="chart-card"><canvas id="lineChart"></canvas></div>
+            <div class="chart-card"><canvas id="billingChart"></canvas></div>
+            <div class="chart-card"><canvas id="monthlyPatientsChart"></canvas></div>
+            <div class="chart-card"><canvas id="roomChart"></canvas></div>
         </div>
 
     </div>
-</div>
 
 <script>
 new Chart(document.getElementById('lineChart'), {
@@ -100,11 +107,19 @@ new Chart(document.getElementById('lineChart'), {
         datasets: [{
             label: 'Total Count',
             data: [<?= $patients ?>, <?= $appointments ?>],
-            borderColor: '#007bff',
-            backgroundColor: '#cce5ff',
+            borderColor: '#4A90D9',
+            backgroundColor: 'rgba(74, 144, 217, 0.1)',
             tension: 0.3,
-            fill: true
+            fill: true,
+            pointBackgroundColor: '#4A90D9',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { labels: { font: { family: "'Segoe UI', system-ui, sans-serif" } } } },
+        scales: { y: { beginAtZero: true } }
     }
 });
 
@@ -114,8 +129,13 @@ new Chart(document.getElementById('billingChart'), {
         labels: ['Paid', 'Pending'],
         datasets: [{
             data: [<?= $paid ?>, <?= $pending ?>],
-            backgroundColor: ['#28a745', '#ffc107']
+            backgroundColor: ['#5BB5A2', '#F5A623'],
+            borderWidth: 0
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { labels: { font: { family: "'Segoe UI', system-ui, sans-serif" } } } }
     }
 });
 
@@ -126,8 +146,16 @@ new Chart(document.getElementById('monthlyPatientsChart'), {
         datasets: [{
             label: 'Patients',
             data: <?= json_encode($data) ?>,
-            backgroundColor: '#17a2b8'
+            backgroundColor: 'rgba(74, 144, 217, 0.7)',
+            borderColor: '#4A90D9',
+            borderWidth: 1,
+            borderRadius: 6
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { labels: { font: { family: "'Segoe UI', system-ui, sans-serif" } } } },
+        scales: { y: { beginAtZero: true } }
     }
 });
 
@@ -137,8 +165,13 @@ new Chart(document.getElementById('roomChart'), {
         labels: ['Available', 'Occupied'],
         datasets: [{
             data: [<?= $available ?>, <?= $occupied ?>],
-            backgroundColor: ['#28a745', '#dc3545']
+            backgroundColor: ['#5BB5A2', '#E8636F'],
+            borderWidth: 0
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { labels: { font: { family: "'Segoe UI', system-ui, sans-serif" } } } }
     }
 });
 </script>

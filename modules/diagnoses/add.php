@@ -3,13 +3,12 @@ session_start();
 include "../../config/db.php";
 require_once "../../includes/classes/Diagnosis.php";
 require_once "../../includes/classes/Patient.php";
-include "../../templates/header.php";
-
+require_once "../../includes/classes/User.php";
 $diagnosisService = new Diagnosis($db);
 $patient = new Patient($db);
+$userService = new User($db);
 $patients = $patient->getAllPatients();
-$doctors = $diagnosisService->getDoctorUserAccounts();
-
+$doctors = $userService->getDoctorUserAccounts();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $diagnosis = $_POST['diagnosis'];
@@ -20,10 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Diagnosis</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to diagnoses</a>
+    <h2 class="page-title">? Add Diagnosis</h2>
     <div class="form-container">
         <form method="POST">
             <label>Patient:</label>
@@ -51,4 +53,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Save</button>
         </form>
     </div>
-</div>

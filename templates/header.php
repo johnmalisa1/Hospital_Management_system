@@ -2,17 +2,31 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="/Hospital_Management_Starter/assets/css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<!-- Sidebar navigation -->
-<div class="sidebar">
-    <h3>Hospital Admin</h3>
+<?php if ($role === 'Admin'): ?>
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<?php endif; ?>
 
-    <a href="/Hospital_Management_Starter/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-    <a href="/Hospital_Management_Starter/modules/patients/view.php"><i class="fas fa-user-injured"></i> Patients</a>
+<?php if ($role === 'Admin'): ?>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <i class="fas fa-hospital"></i>
+        <span>Praise Hospital</span>
+    </div>
+
+    <a href="/Hospital_Management_Starter/dashboard.php" class="<?= $current_page === 'dashboard.php' ? 'active' : '' ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="/Hospital_Management_Starter/modules/patients/view.php" class="<?= $current_page === 'view.php' && strpos($_SERVER['REQUEST_URI'], 'patients') !== false ? 'active' : '' ?>"><i class="fas fa-user-injured"></i> Patients</a>
     <a href="/Hospital_Management_Starter/modules/doctors/view.php"><i class="fas fa-user-md"></i> Doctors</a>
     <a href="/Hospital_Management_Starter/modules/pharmacy/view.php"><i class="fas fa-pills"></i> Pharmacy</a>
     <a href="/Hospital_Management_Starter/modules/billing/view.php"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
@@ -22,16 +36,14 @@ if (session_status() == PHP_SESSION_NONE) {
     <a href="/Hospital_Management_Starter/modules/lab_test_results/view.php"><i class="fas fa-microscope"></i> Lab Test Results</a>
     <a href="/Hospital_Management_Starter/modules/users/view.php"><i class="fas fa-users-cog"></i> Users</a>
 
-    <!-- Newly added modules -->
-    <hr style="border-color:#555;">
-
+    <hr>
     <a href="/Hospital_Management_Starter/modules/wards/view.php"><i class="fas fa-hospital"></i> Wards</a>
     <a href="/Hospital_Management_Starter/modules/payments/view.php"><i class="fas fa-money-bill-wave"></i> Payments</a>
-    <a href="/Hospital_Management_Starter/modules/insurance_providers/view.php"><i class="fas fa-handshake"></i> Insurance Providers</a>
+    <a href="/Hospital_Management_Starter/modules/insurance_providers/view.php"><i class="fas fa-handshake"></i> Insurance</a>
     <a href="/Hospital_Management_Starter/modules/patient_insurance/view.php"><i class="fas fa-id-card-alt"></i> Patient Insurance</a>
     <a href="/Hospital_Management_Starter/modules/treatments/view.php"><i class="fas fa-notes-medical"></i> Treatments</a>
 
-    <hr style="border-color:#555;">
+    <hr>
     <a href="/Hospital_Management_Starter/modules/medicalhistory/view.php"><i class="fas fa-heartbeat"></i> Medical History</a>
     <a href="/Hospital_Management_Starter/modules/testsamples/view.php"><i class="fas fa-vial"></i> Test Samples</a>
     <a href="/Hospital_Management_Starter/modules/schedules/view.php"><i class="fas fa-calendar-alt"></i> Schedules</a>
@@ -46,9 +58,13 @@ if (session_status() == PHP_SESSION_NONE) {
     <a href="/Hospital_Management_Starter/modules/rooms_log/view.php"><i class="fas fa-door-open"></i> Rooms Log</a>
     <a href="/Hospital_Management_Starter/modules/expenses/view.php"><i class="fas fa-wallet"></i> Expenses</a>
 
-    <hr style="border-color:#555;">
+    <hr>
     <a href="/Hospital_Management_Starter/logout.php" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
+<?php endif; ?>
 
-<!-- Content wrapper -->
+<?php if ($role === 'Admin'): ?>
 <div class="main-content">
+<?php else: ?>
+<div>
+<?php endif; ?>

@@ -1,11 +1,8 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/Expense.php';
-
 $expense = new Expense($db);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $expense->addExpense(
         $_POST['category'],
@@ -16,10 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Expense</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to expenses</a>
+    <h2 class="page-title">? Add Expense</h2>
     <div class="form-container">
         <form method="POST">
             <label>Category:</label>
@@ -37,4 +37,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Save</button>
         </form>
     </div>
-</div>

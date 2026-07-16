@@ -3,12 +3,9 @@ session_start();
 include "../../config/db.php";
 require_once "../../includes/classes/Vaccination.php";
 require_once "../../includes/classes/Patient.php";
-include "../../templates/header.php";
-
 $vaccination = new Vaccination($db);
 $patient = new Patient($db);
 $patients = $patient->getAllPatients();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $vaccine_name = $_POST['vaccine_name'];
@@ -19,10 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Vaccination</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to vaccinations</a>
+    <h2 class="page-title">? Add Vaccination</h2>
     <div class="form-container">
         <form method="POST">
             <label>Patient:</label>
@@ -45,4 +45,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Save</button>
         </form>
     </div>
-</div>

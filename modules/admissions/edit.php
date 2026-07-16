@@ -1,16 +1,12 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../navbar.php";
 require_once __DIR__ . '/../../includes/classes/Admission.php';
 require_once __DIR__ . '/../../includes/classes/Patient.php';
-
 $admission = new Admission($db);
- $patient = new Patient($db);
-
-$id = $_GET['id'];
+$patient = new Patient($db);
+$id = intval($_GET['id']);
 $row = $admission->getAdmissionById($id);
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $admission->updateAdmission(
         $id,
@@ -21,9 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
-<h2 style="text-align:center;">✏️ Edit Admission</h2>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to admissions</a>
+<h2 style="text-align:center;">?? Edit Admission</h2>
 <form method="POST" style="width:400px; margin:auto; background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px #ccc;">
     <label>Patient:</label>
     <select name="patient_id" required style="width:100%; padding:10px;">
@@ -52,3 +51,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <button type="submit" style="padding:10px 20px; background:#007bff; color:white; border:none;">Update</button>
 </form>
+</div>

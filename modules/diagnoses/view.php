@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 session_start();
 include "../../config/db.php";
 require_once "../../includes/classes/Diagnosis.php";
 include "../../templates/header.php";
 ?>
 
-<div class="main-content">
+
     <h2 class="page-title">🩺 Patient Diagnoses</h2>
-    <div class="center-btn">
+    <div style="text-align: center; margin-bottom: 20px;">
         <a href="add.php" class="quick-btn">+ Add Diagnosis</a>
     </div>
 
-    <table>
+    <div class="table-responsive"><table>
         <tr>
             <th>ID</th>
             <th>Patient</th>
@@ -38,5 +38,9 @@ include "../../templates/header.php";
             </td>
         </tr>
         <?php endwhile; ?>
-    </table>
+    </table></div>
 </div>
+
+
+
+

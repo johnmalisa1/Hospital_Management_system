@@ -156,24 +156,6 @@ class Appointment
         return $statement->get_result();
     }
 
-    public function getPatientIdByUsername(string $username): ?int
-    {
-        $statement = $this->getConnection()->prepare(
-            'SELECT patient_id FROM patients WHERE username = ?'
-        );
-        $statement->bind_param('s', $username);
-        $statement->execute();
-        $patient = $statement->get_result()->fetch_assoc();
-        $statement->close();
-
-        return $patient === null ? null : (int) $patient['patient_id'];
-    }
-
-    public function getDoctorUserAccounts(): mysqli_result
-    {
-        return $this->getConnection()->query("SELECT id, username FROM users WHERE role = 'Doctor'");
-    }
-
     public function countAppointments(): int
     {
         $result = $this->getConnection()->query('SELECT COUNT(*) AS total FROM appointments');

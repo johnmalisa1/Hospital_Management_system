@@ -56,11 +56,6 @@ class Treatment
         return $this->connection()->query('SELECT t.*, p.name AS patient_name, u.username AS doctor_name FROM treatments t JOIN patients p ON t.patient_id = p.patient_id JOIN users u ON t.doctor_id = u.id ORDER BY date_given DESC');
     }
 
-    public function getDoctorUserAccounts(): mysqli_result
-    {
-        return $this->connection()->query("SELECT * FROM users WHERE role = 'Doctor'");
-    }
-
     private function connection(): mysqli
     {
         return $this->database->getConnection();

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../../login.php");
@@ -6,55 +6,34 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 include "../../config/db.php";
 require_once "../../includes/classes/Appointment.php";
-include "../../navbar.php";
 
 $appointment = new Appointment($db);
 $result = $appointment->getAllAppointments();
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Appointments - Admin</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f4f4;
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .appointment {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px auto;
-            width: 85%;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .appointment p {
-            margin: 6px 0;
-        }
-        .status {
-            font-weight: bold;
-            color: #007bff;
-        }
-    </style>
-</head>
-<body>
+<?php include "../../templates/header.php"; ?>
 
-<h2>All Appointments</h2>
+<div class="appointment-list">
+    <a href="../../dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    <h2><i class="fas fa-calendar-check"></i> All Appointments</h2>
 
-<?php while ($row = $result->fetch_assoc()): ?>
-<div class="appointment">
-    <p><strong>Patient:</strong> <?= $row['patient_name'] ?></p>
-    <p><strong>Doctor:</strong> <?= $row['doctor_name'] ?></p>
-    <p><strong>Date:</strong> <?= $row['appointment_date'] ?></p>
-    <p><strong>Status:</strong> <span class="status"><?= $row['status'] ?></span></p>
+    <?php while ($row = $result->fetch_assoc()): ?>
+    <div class="data-card">
+        <p><strong><i class="fas fa-user" style="color: var(--primary);"></i> Patient:</strong> <?= htmlspecialchars($row['patient_name']) ?></p>
+        <p><strong><i class="fas fa-user-md" style="color: var(--primary);"></i> Doctor:</strong> <?= htmlspecialchars($row['doctor_name']) ?></p>
+        <p><strong><i class="fas fa-calendar" style="color: var(--primary);"></i> Date:</strong> <?= htmlspecialchars($row['appointment_date']) ?></p>
+        <p><strong><i class="fas fa-info-circle" style="color: var(--primary);"></i> Status:</strong>
+            <?php
+            $status_class = 'badge-pending';
+            if ($row['status'] === 'Scheduled') $status_class = 'badge-scheduled';
+            elseif ($row['status'] === 'Completed') $status_class = 'badge-completed';
+            elseif (strpos($row['status'], 'Cancelled') !== false) $status_class = 'badge-cancelled';
+            ?>
+            <span class="badge <?= $status_class ?>"><?= htmlspecialchars($row['status']) ?></span>
+        </p>
+    </div>
+    <?php endwhile; ?>
 </div>
-<?php endwhile; ?>
 
-</body>
-</html>
+<?php include "../../templates/footer.php"; ?>
+

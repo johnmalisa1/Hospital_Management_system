@@ -56,11 +56,6 @@ class Diagnosis
         return $this->connection()->query('SELECT d.*, p.name AS patient_name, u.username AS doctor_name FROM diagnoses d JOIN patients p ON d.patient_id = p.patient_id JOIN users u ON d.doctor_id = u.id');
     }
 
-    public function getDoctorUserAccounts(): mysqli_result
-    {
-        return $this->connection()->query("SELECT * FROM users WHERE role = 'Doctor'");
-    }
-
     private function connection(): mysqli
     {
         return $this->database->getConnection();

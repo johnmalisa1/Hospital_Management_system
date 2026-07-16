@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Doctor')) {
     header("Location: ../../login.php");
@@ -8,10 +8,12 @@ include "../../config/db.php";
 require_once "../../includes/classes/LabTest.php";
 require_once "../../includes/classes/LabTestResult.php";
 require_once "../../includes/classes/Patient.php";
+require_once "../../includes/classes/User.php";
 
 $labTestResult = new LabTestResult($db);
 $labTest = new LabTest($db);
 $patient = new Patient($db);
+$userService = new User($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
@@ -26,8 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $patients = $patient->getAllPatients();
 $tests = $labTest->getAllLabTests();
-$doctors = $labTestResult->getDoctorUserAccounts();
+$doctors = $userService->getDoctorUserAccounts();
 ?>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to lab_test_results</a>
 <h2 style="text-align:center;">Add Lab Test Result</h2>
 <form method="POST" style="width:500px;margin:auto;padding:30px;background:white;border-radius:10px;box-shadow:0 0 10px #ccc;">
     <label>Patient:</label>
@@ -62,3 +65,4 @@ $doctors = $labTestResult->getDoctorUserAccounts();
 
     <button type="submit" style="background:#28a745;color:white;padding:10px 20px;border:none;">Save</button>
 </form>
+

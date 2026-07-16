@@ -6,9 +6,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 
 include "../../config/db.php";
-include "../../templates/header.php";
 
-// Fetch admissions and doctors for selection
 $admissions = $conn->query("
     SELECT a.admission_id, p.name AS patient_name 
     FROM admissions a 
@@ -34,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to insert discharge record.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>➕ Add Discharge Record</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Discharges</a>
+<h2>? Add Discharge Record</h2>
 
     <?php if (isset($error)): ?>
         <p class="error"><?= $error ?></p>

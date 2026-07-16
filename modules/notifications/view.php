@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: ../../login.php"); exit(); }
 include "../../config/db.php";
-include "../../navbar.php";
+include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/Notification.php';
 
 $notification = new Notification($db);
@@ -11,7 +11,7 @@ $res = $notification->getAllNotifications();
 
 <h2 style="text-align:center;">User Notifications</h2>
 
-<table style="width:90%; margin:auto; background:white; border-collapse:collapse; box-shadow:0 0 10px #ccc;">
+<div class="table-responsive"><table style="width:90%; margin:auto; background:white; border-collapse:collapse; box-shadow:0 0 10px #ccc;">
     <tr style="background:#007bff; color:white;">
         <th>ID</th><th>User</th><th>Message</th><th>Read?</th><th>Created</th><th>Action</th>
     </tr>
@@ -27,5 +27,7 @@ $res = $notification->getAllNotifications();
         <td><a href="delete.php?id=<?= $row['id'] ?>" style="color:red;" onclick="return confirm('Delete?')">Delete</a></td>
     </tr>
     <?php endwhile; ?>
-</table>
+</table></div>
+</div>
+
 

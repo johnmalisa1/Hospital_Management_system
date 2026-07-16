@@ -5,14 +5,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/Equipment.php';
-
 $equipment = new Equipment($db);
-
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $row = $equipment->getEquipmentById($id);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $equipment->updateEquipment(
         $id,
@@ -26,10 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">✏️ Edit Equipment</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to equipment</a>
+    <h2 class="page-title">?? Edit Equipment</h2>
     <div class="form-container">
         <form method="POST">
             <label>Name:</label>
@@ -54,4 +53,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Update</button>
         </form>
     </div>
-</div>

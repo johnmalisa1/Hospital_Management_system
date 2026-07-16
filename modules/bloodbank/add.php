@@ -5,11 +5,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/BloodBank.php';
-
 $bloodBank = new BloodBank($db);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bloodBank->addUnit(
         $_POST['blood_type'],
@@ -23,11 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Blood Unit</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to bloodbank</a>
+    <h2 class="page-title">? Add Blood Unit</h2>
     <div class="form-container">
         <form method="POST">
             <label>Blood Type:</label>
@@ -55,4 +55,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Save</button>
         </form>
     </div>
-</div>

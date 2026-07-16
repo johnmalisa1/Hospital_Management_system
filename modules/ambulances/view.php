@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../login.php");
@@ -12,13 +12,13 @@ $ambulance = new Ambulance($db);
 $result = $ambulance->getAllAmbulances();
 ?>
 
-<div class="main-content">
+
     <h2 class="page-title">🚑 Ambulance Management</h2>
-    <div class="center-btn">
+    <div style="text-align: center; margin-bottom: 20px;">
         <a href="add.php" class="quick-btn">+ Add Ambulance</a>
     </div>
 
-    <table>
+    <div class="table-responsive"><table>
         <tr>
             <th>ID</th>
             <th>Vehicle No.</th>
@@ -43,5 +43,9 @@ $result = $ambulance->getAllAmbulances();
             </td>
         </tr>
         <?php endwhile; ?>
-    </table>
+    </table></div>
 </div>
+
+
+
+

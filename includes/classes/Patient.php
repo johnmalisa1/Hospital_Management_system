@@ -122,11 +122,6 @@ class Patient extends User
         return 'Patient';
     }
 
-    private function getConnection(): mysqli
-    {
-        return $this->getDatabase()->getConnection();
-    }
-
     /**
      * @param array<string, mixed> $patient
      */

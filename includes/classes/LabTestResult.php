@@ -80,21 +80,6 @@ class LabTestResult
         return $statement->get_result();
     }
 
-    public function getDoctorUserAccounts(): mysqli_result
-    {
-        return $this->connection()->query("SELECT * FROM users WHERE role = 'Doctor'");
-    }
-
-    public function getPatientIdByUsername(string $username): ?int
-    {
-        $statement = $this->connection()->prepare('SELECT patient_id FROM patients WHERE username = ?');
-        $statement->bind_param('s', $username);
-        $statement->execute();
-        $patient = $statement->get_result()->fetch_assoc();
-        $statement->close();
-        return $patient === null ? null : (int) $patient['patient_id'];
-    }
-
     private function connection(): mysqli
     {
         return $this->database->getConnection();

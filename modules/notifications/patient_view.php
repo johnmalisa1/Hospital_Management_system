@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Patient') {
     exit();
 }
 include "../../config/db.php";
-include "../../navbar.php";
+include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/Notification.php';
 
 $notification = new Notification($db);
@@ -31,3 +31,4 @@ $results = $notification->getNotificationsByUserId($user_id);
     </tr>
     <?php endwhile; ?>
 </table>
+</div>

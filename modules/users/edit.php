@@ -1,11 +1,8 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../navbar.php";
-
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $row = $conn->query("SELECT * FROM users WHERE id = $id")->fetch_assoc();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $role = $_POST['role'];
@@ -16,9 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
-<h2 style="text-align:center;">✏️ Edit User</h2>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to users</a>
+<h2 style="text-align:center;">?? Edit User</h2>
 <form method="POST" style="width:400px; margin:auto; padding:20px; background:white; border-radius:10px; box-shadow:0 0 10px #ccc;">
     <label>Username:</label>
     <input type="text" name="username" value="<?= $row['username'] ?>" required style="width:100%; padding:10px;"><br><br>
@@ -32,3 +32,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <button type="submit" style="padding:10px 20px; background:#007bff; color:white; border:none;">Update User</button>
 </form>
+</div>

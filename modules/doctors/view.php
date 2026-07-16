@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../../login.php");
@@ -13,21 +13,15 @@ $doctor = new Doctor($db);
 $result = $doctor->getAllDoctors();
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Doctors</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
-<body>
 
-<div class="main-content">
-    <h2 class="center-text">👨‍⚕️ All Doctors</h2>
+    <a href="../../dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    <h2 class="center-text">All Doctors</h2>
 
     <div style="text-align: center; margin-bottom: 20px;">
         <a href="add.php" class="quick-btn">➕ Add Doctor</a>
     </div>
 
+    <div class="table-responsive">
     <table>
         <thead>
             <tr>
@@ -59,8 +53,8 @@ $result = $doctor->getAllDoctors();
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <?php include "../../templates/footer.php"; ?>
-</body>
-</html>
+

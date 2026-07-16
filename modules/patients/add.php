@@ -7,10 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 
 include "../../config/db.php";
 require_once "../../includes/classes/Patient.php";
-include "../../templates/header.php";
-
 $patient = new Patient($db);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name    = $_POST['name'];
     $gender  = $_POST['gender'];
@@ -25,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to add patient.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
 <div class="main-content">
-    <h2 class="center-text">➕ Add New Patient</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Patients</a>
+    <h2 class="center-text">Add New Patient</h2>
 
     <?php if (isset($error)): ?>
         <p style="color:red; text-align:center;"><?= $error ?></p>

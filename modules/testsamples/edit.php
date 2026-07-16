@@ -5,13 +5,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
-
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $data = $conn->query("SELECT * FROM test_samples WHERE sample_id = $id")->fetch_assoc();
 $patients = $conn->query("SELECT * FROM patients");
 $tests = $conn->query("SELECT * FROM lab_tests");
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $lab_test_id = $_POST['lab_test_id'];
@@ -28,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Update failed.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>✏️ Edit Sample</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Test Samples</a>
+<h2>?? Edit Sample</h2>
 
     <form method="POST">
         <label>Patient:</label>

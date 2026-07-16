@@ -7,8 +7,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 
 
 include "../../config/db.php";
-include "../../navbar.php";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -39,9 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+include "../../templates/header.php";
+
 ?>
 
-<h2 style="text-align:center;">👤 Add System User</h2>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to users</a>
+<h2 style="text-align:center;">?? Add System User</h2>
 <form method="POST" style="width:400px; margin:auto; padding:20px; background:white; border-radius:10px; box-shadow:0 0 10px #ccc;">
     <label>Username:</label>
     <input type="text" name="username" required style="width:100%; padding:10px;"><br><br>
@@ -59,3 +60,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <button type="submit" style="padding:10px 20px; background:#28a745; color:white; border:none;">Add User</button>
 </form>
+</div>

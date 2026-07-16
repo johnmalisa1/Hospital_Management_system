@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: ../../login.php"); exit(); }
 include "../../config/db.php";
@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $users = $db->getConnection()->query("SELECT id, username FROM users");
 ?>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to notifications</a>
 <h2 style="text-align:center;">Send Notification</h2>
 <form method="POST" style="width:400px;margin:auto;padding:30px;background:white;border-radius:10px;box-shadow:0 0 10px #ccc;">
     <label>Select User:</label>
@@ -31,4 +32,5 @@ $users = $db->getConnection()->query("SELECT id, username FROM users");
 
     <button type="submit" style="background:#007bff;color:white;padding:10px 20px;">Send</button>
 </form>
+
 

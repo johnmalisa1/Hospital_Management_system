@@ -7,12 +7,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 include "../../config/db.php";
 require_once "../../includes/classes/MedicalHistory.php";
 require_once "../../includes/classes/Patient.php";
-include "../../templates/header.php";
-
 $medicalHistory = new MedicalHistory($db);
 $patient = new Patient($db);
 $patients = $patient->getAllPatients();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $condition = $_POST['condition'];
@@ -27,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to add history.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>➕ Add Medical History</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Medical History</a>
+<h2>? Add Medical History</h2>
 
     <form method="POST">
         <label>Patient:</label>

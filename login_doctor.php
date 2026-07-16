@@ -27,64 +27,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Doctor Login</title>
-    <style>
-        body {
-            background: #f2f2f2;
-            font-family: Arial;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-            width: 350px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #007bff;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            background: #007bff;
-            color: white;
-            padding: 12px;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-
-        .error {
-            color: red;
-            text-align: center;
-            font-size: 14px;
-        }
-    </style>
 </head>
-<body>
-
-<form method="POST">
-    <h2>Doctor Login</h2>
-    <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
-    <input type="text" name="username" placeholder="Doctor Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-</form>
-
+<body class="login-page">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-brand">
+                <i class="fas fa-user-md"></i>
+                <h2>Praise Hospital</h2>
+                <span class="role-badge doctor"><i class="fas fa-stethoscope"></i> Doctor Portal</span>
+            </div>
+            <form method="POST" style="box-shadow: none; padding: 0; width: 100%;">
+                <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+                <input type="text" name="username" placeholder="Doctor Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+            <div style="text-align: center;">
+                <a href="index.php" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-

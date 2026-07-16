@@ -1,23 +1,23 @@
 <?php
 session_start();
 include "../../config/db.php";
-require_once "../../includes/classes/Pharmacy.php";
-include "../../navbar.php";
-
-$pharmacy = new Pharmacy($db);
-
+require_once "../../includes/classes/Medicine.php";
+$medicine = new Medicine($db);
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = $_POST['name'];
     $qty = $_POST['quantity'];
     $price = $_POST['price'];
 
-    $pharmacy->addMedicine($name, $qty, $price);
+    $medicine->addMedicine($name, '', (int)$qty, (int)$price);
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
-<h2 style="text-align:center;">➕ Add Medicine</h2>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to pharmacy</a>
+<h2 style="text-align:center;">? Add Medicine</h2>
 <form method="POST" style="width:400px; margin:auto; padding:20px; background:white; border-radius:10px; box-shadow:0 0 10px #ccc;">
     <label>Medicine Name:</label>
     <input type="text" name="name" required style="width:100%; padding:10px;"><br><br>
@@ -30,3 +30,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <button type="submit" style="padding:10px 20px; background:#28a745; color:white; border:none;">Save Medicine</button>
 </form>
+</div>

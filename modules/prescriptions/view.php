@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: ../../login.php"); exit(); }
 include "../../config/db.php";
 require_once "../../includes/classes/Prescription.php";
-include "../../navbar.php";
+include "../../templates/header.php";
 ?>
 
 <h2 style="text-align:center;">Prescriptions</h2>
@@ -12,7 +12,7 @@ include "../../navbar.php";
     <a href="add.php" style="background:#007bff;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;">+ Add Prescription</a>
 </div>
 
-<table style="width: 95%; margin: auto; background: white; border-collapse: collapse; box-shadow: 0 0 10px #ccc;">
+<div class="table-responsive"><table style="width: 95%; margin: auto; background: white; border-collapse: collapse; box-shadow: 0 0 10px #ccc;">
     <tr style="background: #007bff; color: white;">
         <th>ID</th><th>Patient</th><th>Doctor</th><th>Medicine</th><th>Dosage</th><th>Instructions</th><th>Date</th><th>Actions</th>
     </tr>
@@ -35,4 +35,7 @@ include "../../navbar.php";
         </td>
     </tr>
     <?php endwhile; ?>
-</table>
+</table></div>
+</div>
+
+

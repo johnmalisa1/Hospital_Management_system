@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../../login.php");
@@ -31,47 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<style>
-    body {
-        background: #f4f6f9;
-        font-family: Arial, sans-serif;
-    }
-    .form-container {
-        width: 550px;
-        margin: 50px auto;
-        background: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h2 {
-        text-align: center;
-        margin-bottom: 25px;
-    }
-    label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: bold;
-    }
-    input, select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-    }
-    button {
-        background: #17a2b8;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        width: 100%;
-        font-size: 16px;
-    }
-</style>
-
 <div class="form-container">
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Patient Insurance</a>
     <h2>✏️ Edit Patient Insurance</h2>
     <form method="POST">
         <label>Patient</label>

@@ -1,10 +1,7 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../templates/header.php";
-
 $wards = $conn->query("SELECT * FROM wards");
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $phone = $_POST['phone'];
@@ -17,10 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Nurse</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to nurses</a>
+    <h2 class="page-title">? Add Nurse</h2>
     <div class="form-container">
         <form method="POST">
             <label>Name:</label>
@@ -43,4 +43,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Save</button>
         </form>
     </div>
-</div>

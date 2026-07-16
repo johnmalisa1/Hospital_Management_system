@@ -1,1 +1,1 @@
-<?php // Placeholder for view.php ?>
+﻿<?php // Placeholder for view.php ?>

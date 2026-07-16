@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Ambulance</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to ambulances</a>
+    <h2 class="page-title">? Add Ambulance</h2>
     <div class="form-container">
         <form method="POST">
             <label>Vehicle Number:</label>
@@ -46,4 +47,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Save</button>
         </form>
     </div>
-</div>
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../login.php");
@@ -12,13 +12,13 @@ $bloodBank = new BloodBank($db);
 $result = $bloodBank->getAllUnits();
 ?>
 
-<div class="main-content">
+
     <h2 class="page-title">🩸 Blood Bank</h2>
-    <div class="center-btn">
+    <div style="text-align: center; margin-bottom: 20px;">
         <a href="add.php" class="quick-btn">+ Add Blood Unit</a>
     </div>
 
-    <table>
+    <div class="table-responsive"><table>
         <tr>
             <th>ID</th>
             <th>Blood Type</th>
@@ -47,5 +47,9 @@ $result = $bloodBank->getAllUnits();
             </td>
         </tr>
         <?php endwhile; ?>
-    </table>
+    </table></div>
 </div>
+
+
+
+

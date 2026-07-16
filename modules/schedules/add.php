@@ -5,10 +5,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
-
 $doctors = $conn->query("SELECT doctor_id, doctor_name FROM doctors");
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $doctor_id = $_POST['doctor_id'];
     $day = $_POST['day'];
@@ -26,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to add schedule.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>➕ Add Schedule</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Schedules</a>
+<h2>? Add Schedule</h2>
 
     <form method="POST">
         <label>Doctor:</label>

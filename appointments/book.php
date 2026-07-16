@@ -2,6 +2,7 @@
 session_start();
 include "../config/db.php";
 require_once "../includes/classes/Appointment.php";
+require_once "../includes/classes/User.php";
 
 // Check if patient is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Patient') {
@@ -14,7 +15,8 @@ $success = "";
 $appointment = new Appointment($db);
 
 // Fetch all doctors
-$doctors = $appointment->getDoctorUserAccounts();
+$user = new User($db);
+$doctors = $user->getDoctorUserAccounts();
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -35,92 +37,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
     <title>Book Appointment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .form-container {
-            width: 400px;
-            margin: 60px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
-
-        h2 {
-            text-align: center;
-            color: #007bff;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="date"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background: #007bff;
-            color: white;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        .error {
-            color: red;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="login-page">
 
-<div class="form-container">
-    <h2>Book Appointment</h2>
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-brand">
+            <i class="fas fa-calendar-plus"></i>
+            <h2>Book Appointment</h2>
+        </div>
 
-    <?php if (!empty($success)) echo "<p class='error'>$success</p>"; ?>
+        <?php if (!empty($success)) echo "<p class='error'>$success</p>"; ?>
 
-    <form method="POST">
-        <label>Select Doctor:</label>
-        <select name="doctor_id" required>
-            <option value="">-- Choose Doctor --</option>
-            <?php while ($doc = $doctors->fetch_assoc()): ?>
-                <option value="<?= $doc['id'] ?>"><?= htmlspecialchars($doc['username']) ?></option>
-            <?php endwhile; ?>
-        </select>
+        <form method="POST" style="box-shadow: none; padding: 0; width: 100%;">
+            <label>Select Doctor:</label>
+            <select name="doctor_id" required>
+                <option value="">-- Choose Doctor --</option>
+                <?php while ($doc = $doctors->fetch_assoc()): ?>
+                    <option value="<?= $doc['id'] ?>"><?= htmlspecialchars($doc['username']) ?></option>
+                <?php endwhile; ?>
+            </select>
 
-        <label>Appointment Date:</label>
-        <input type="date" name="appointment_date" required>
+            <label>Appointment Date:</label>
+            <input type="date" name="appointment_date" required>
 
-        <button type="submit">Book</button>
-    </form>
+            <button type="submit"><i class="fas fa-check"></i> Book</button>
+        </form>
 
-    <a class="back-link" href="../patient_dashboard.php">← Back to Dashboard</a>
+        <div style="text-align: center;">
+            <a href="../patient_dashboard.php" class="back-home"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </div>
 </div>
 
 </body>

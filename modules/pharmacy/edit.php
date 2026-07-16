@@ -1,25 +1,25 @@
 <?php
 session_start();
 include "../../config/db.php";
-require_once "../../includes/classes/Pharmacy.php";
-include "../../navbar.php";
-
-$id = $_GET['id'];
-$pharmacy = new Pharmacy($db);
-$row = $pharmacy->getMedicineById($id);
-
+require_once "../../includes/classes/Medicine.php";
+$medicine = new Medicine($db);
+$id = intval($_GET['id']);
+$row = $medicine->getMedicineById($id);
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = $_POST['name'];
     $qty = $_POST['quantity'];
     $price = $_POST['price'];
 
-    $pharmacy->updateMedicine($id, $name, $qty, $price);
+    $medicine->updateMedicine((int)$id, $name, '', (int)$qty, (int)$price);
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
-<h2 style="text-align:center;">✏️ Edit Medicine</h2>
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to pharmacy</a>
+<h2 style="text-align:center;">?? Edit Medicine</h2>
 <form method="POST" style="width:400px; margin:auto; padding:20px; background:white; border-radius:10px; box-shadow:0 0 10px #ccc;">
     <label>Medicine Name:</label>
     <input type="text" name="name" value="<?= $row['name'] ?>" required style="width:100%; padding:10px;"><br><br>
@@ -32,3 +32,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <button type="submit" style="padding:10px 20px; background:#007bff; color:white; border:none;">Update</button>
 </form>
+</div>

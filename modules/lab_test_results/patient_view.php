@@ -7,34 +7,55 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Patient') {
 
 include "../../config/db.php";
 require_once "../../includes/classes/LabTestResult.php";
-include "../../navbar.php";
+require_once "../../includes/classes/User.php";
+include "../../templates/header.php";
 
 // Get the logged-in patient's ID
 $username = $_SESSION['username'];
 $labTestResult = new LabTestResult($db);
-$patient_id = $labTestResult->getPatientIdByUsername($username);
+$userService = new User($db);
+$patient_id = $userService->getPatientIdByUsername($username);
 ?>
 
-<h2 style="text-align:center;">My Lab Test Results</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-<table style="width:90%; margin:auto; background:white; border-collapse:collapse; box-shadow: 0 0 8px #ccc;">
-    <tr style="background:#007bff; color:white;">
-        <th>Test Name</th>
-        <th>Doctor</th>
-        <th>Result</th>
-        <th>Date</th>
-    </tr>
+<div class="main-content">
+    <a href="../../patient_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    <h2 style="text-align:center;"><i class="fas fa-microscope"></i> My Lab Test Results</h2>
 
-    <?php
-    $results = $labTestResult->getResultsByPatient($patient_id);
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Doctor</th>
+                    <th>Result</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $results = $labTestResult->getResultsByPatient($patient_id);
 
-    while ($row = $results->fetch_assoc()):
-    ?>
-    <tr>
-        <td><?= $row['test_name'] ?></td>
-        <td><?= $row['doctor_name'] ?></td>
-        <td><?= $row['result_text'] ?></td>
-        <td><?= $row['result_date'] ?></td>
-    </tr>
-    <?php endwhile; ?>
-</table>
+            while ($row = $results->fetch_assoc()):
+            ?>
+            <tr>
+                <td><?= htmlspecialchars($row['test_name']) ?></td>
+                <td><?= htmlspecialchars($row['doctor_name']) ?></td>
+                <td><?= htmlspecialchars($row['result_text']) ?></td>
+                <td><?= htmlspecialchars($row['result_date']) ?></td>
+            </tr>
+            <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php include "../../templates/footer.php"; ?>
+</body>
+</html>

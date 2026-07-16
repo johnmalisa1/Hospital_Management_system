@@ -31,51 +31,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Reschedule Appointment</title>
-    <style>
-        body {
-            background: #f9f9f9;
-            font-family: Arial;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px #ccc;
-        }
-
-        input {
-            padding: 10px;
-            width: 100%;
-            margin: 10px 0;
-        }
-
-        button {
-            background: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-        }
-
-        h2 {
-            text-align: center;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="login-page">
 
-<form method="POST">
-    <h2>Reschedule Appointment</h2>
-    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
-    <label>New Date:</label>
-    <input type="date" name="appointment_date" required>
-    <button type="submit">Reschedule</button>
-</form>
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-brand">
+            <i class="fas fa-calendar-alt"></i>
+            <h2>Reschedule Appointment</h2>
+        </div>
+        <form method="POST" style="box-shadow: none; padding: 0; width: 100%;">
+            <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+            <label>New Date:</label>
+            <input type="date" name="appointment_date" required>
+            <button type="submit"><i class="fas fa-check"></i> Reschedule</button>
+        </form>
+        <div style="text-align: center;">
+            <a href="../modules/appointments/doctor_view.php" class="back-home"><i class="fas fa-arrow-left"></i> Back to Appointments</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

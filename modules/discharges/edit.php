@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
 }
 
 include "../../config/db.php";
-include "../../templates/header.php";
 
 $id = $_GET['id'];
 $data = $conn->query("SELECT * FROM discharges WHERE discharge_id = $id")->fetch_assoc();
@@ -30,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to update record.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>✏️ Edit Discharge Record</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Discharges</a>
+<h2>?? Edit Discharge Record</h2>
 
     <?php if (isset($error)): ?>
         <p class="error"><?= $error ?></p>

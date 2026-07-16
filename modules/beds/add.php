@@ -5,8 +5,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ward_id = $_POST['ward_id'];
     $bed_number = $_POST['bed_number'];
@@ -20,12 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
+include "../../templates/header.php";
+
 $wards = $conn->query("SELECT * FROM wards");
 $patients = $conn->query("SELECT * FROM patients");
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">➕ Add Bed</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to beds</a>
+    <h2 class="page-title">? Add Bed</h2>
     <div class="form-container">
         <form method="POST">
             <label>Ward:</label>
@@ -56,4 +57,3 @@ $patients = $conn->query("SELECT * FROM patients");
             <button type="submit">Save</button>
         </form>
     </div>
-</div>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../../login.php");
@@ -18,20 +18,12 @@ $result = $conn->query("
 ");
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Discharge Records</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
-<body>
 
-<div class="main-content">
     <h2>🏁 Patient Discharges</h2>
 
     <a href="add.php" class="quick-btn">➕ Add Discharge</a>
 
-    <table>
+    <div class="table-responsive"><table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -61,9 +53,9 @@ $result = $conn->query("
             <tr><td colspan="6">No discharge records found.</td></tr>
         <?php endif; ?>
         </tbody>
-    </table>
+    </table></div>
 </div>
 
 <?php include "../../templates/footer.php"; ?>
-</body>
-</html>
+
+

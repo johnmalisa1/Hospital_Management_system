@@ -1,14 +1,10 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/Expense.php';
-
 $expense = new Expense($db);
-
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $row = $expense->getExpenseById($id);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $expense->updateExpense(
         $id,
@@ -20,10 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
 <div class="main-content">
-    <h2 class="page-title">✏️ Edit Expense</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to expenses</a>
+    <h2 class="page-title">?? Edit Expense</h2>
     <div class="form-container">
         <form method="POST">
             <label>Category:</label>
@@ -41,4 +40,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Update</button>
         </form>
     </div>
-</div>

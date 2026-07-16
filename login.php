@@ -29,17 +29,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
 </head>
 <body class="login-page">
     <div class="login-wrapper">
-        <form method="POST">
-            <h2>Admin Login</h2>
-            <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
+        <div class="login-card">
+            <div class="login-brand">
+                <i class="fas fa-hospital"></i>
+                <h2>Praise Hospital</h2>
+                <span class="role-badge admin"><i class="fas fa-user-shield"></i> Admin Portal</span>
+            </div>
+            <form method="POST" style="box-shadow: none; padding: 0; width: 100%;">
+                <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+            <div style="text-align: center;">
+                <a href="index.php" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

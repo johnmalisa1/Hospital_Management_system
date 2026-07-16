@@ -1,12 +1,14 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id'])) { header("Location: ../../login.php"); exit(); }
 include "../../config/db.php";
 require_once "../../includes/classes/Prescription.php";
 require_once "../../includes/classes/Patient.php";
+require_once "../../includes/classes/User.php";
 
 $prescription = new Prescription($db);
 $patient = new Patient($db);
+$userService = new User($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
@@ -22,9 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $patients = $patient->getAllPatients();
 $medicines = $prescription->getMedicines();
-$doctors = $prescription->getDoctorUserAccounts();
+$doctors = $userService->getDoctorUserAccounts();
 ?>
 
+<a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to prescriptions</a>
 <h2 style="text-align:center;">Add Prescription</h2>
 <form method="POST" style="width:500px;margin:auto;padding:30px;background:white;border-radius:10px;box-shadow:0 0 10px #ccc;">
     <label>Patient:</label>
@@ -59,3 +62,4 @@ $doctors = $prescription->getDoctorUserAccounts();
 
     <button type="submit" style="background:#28a745;color:white;padding:10px 20px;">Save</button>
 </form>
+

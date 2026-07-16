@@ -6,11 +6,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Patient') {
 }
 include "../../config/db.php";
 require_once "../../includes/classes/Appointment.php";
-
+require_once "../../includes/classes/User.php";
 
 $appointment = new Appointment($db);
+$userService = new User($db);
 $username = $_SESSION['username'];
-$pid = $appointment->getPatientIdByUsername($username);
+$pid = $userService->getPatientIdByUsername($username);
 ?>
 
 <h2 style="text-align:center;">My Appointments</h2>

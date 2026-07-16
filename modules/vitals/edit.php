@@ -5,12 +5,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
-
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 $data = $conn->query("SELECT * FROM vitals WHERE vital_id = $id")->fetch_assoc();
 $patients = $conn->query("SELECT * FROM patients");
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $blood_pressure = $_POST['blood_pressure'];
@@ -29,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Update failed.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>✏️ Edit Vitals</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Vitals</a>
+<h2>?? Edit Vitals</h2>
 
     <form method="POST">
         <label>Patient:</label>

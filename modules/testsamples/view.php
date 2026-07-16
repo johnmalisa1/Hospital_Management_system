@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     header("Location: ../../login.php");
@@ -17,19 +17,12 @@ $result = $conn->query("
 ");
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Test Samples</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-</head>
-<body>
-<div class="main-content">
+
     <h2 class="page-title">🧪 Collected Test Samples</h2>
-    <div class="center-btn">
+    <div style="text-align: center; margin-bottom: 20px;">
     <a href="add.php" class="quick-btn">➕ Add Sample</a>
 </div>
-    <table>
+    <div class="table-responsive"><table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -57,8 +50,8 @@ $result = $conn->query("
             </tr>
         <?php endwhile; ?>
         </tbody>
-    </table>
+    </table></div>
 </div>
 <?php include "../../templates/footer.php"; ?>
-</body>
-</html>
+
+

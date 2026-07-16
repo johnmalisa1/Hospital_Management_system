@@ -1,13 +1,10 @@
 <?php
 session_start();
 include "../../config/db.php";
-include "../../navbar.php";
 require_once __DIR__ . '/../../includes/classes/Admission.php';
 require_once __DIR__ . '/../../includes/classes/Patient.php';
-
 $admission = new Admission($db);
 $patient = new Patient($db);
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admission->addAdmission(
         $_POST['patient_id'],
@@ -18,10 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: view.php");
     exit();
 }
+
+include "../../templates/header.php";
 ?>
 
-<div style="margin-left:230px; padding:20px; max-width:calc(100% - 230px);">
-    <h2 style="text-align:center;">➕ Admit Patient</h2>
+
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to admissions</a>
+<h2 style="text-align:center;">? Admit Patient</h2>
 
     <form method="POST" style="width:400px; margin:auto; background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px #ccc;">
         <label>Patient:</label>
@@ -52,4 +52,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit" style="padding:10px 20px; background:#28a745; color:white; border:none; border-radius:5px;">Admit</button>
     </form>
 </div>
-

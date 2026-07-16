@@ -5,10 +5,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
-
 $patients = $conn->query("SELECT * FROM patients");
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $blood_pressure = $_POST['blood_pressure'];
@@ -28,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Failed to add vitals.";
     }
 }
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="main-content">
-    <h2>➕ Add Patient Vitals</h2>
+    <a href="view.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Vitals</a>
+<h2>? Add Patient Vitals</h2>
 
     <form method="POST">
         <label>Patient:</label>
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Pulse (bpm):</label>
         <input type="number" name="pulse" required>
 
-        <label>Temperature (°C):</label>
+        <label>Temperature (�C):</label>
         <input type="number" step="0.1" name="temperature" required>
 
         <label>Weight (kg):</label>

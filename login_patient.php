@@ -29,65 +29,34 @@ if ($patient && password_verify($password, $patient['password'])) {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Patient Login</title>
-    <style>
-        body {
-            background: #f2f2f2;
-            font-family: Arial;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        form {
-            background: white;
-            padding: 30px;
-            width: 350px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
-        h2 {
-            text-align: center;
-            color: #007bff;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 12px;
-            width: 100%;
-            background: #007bff;
-            border: none;
-            color: white;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-        .error {
-            color: red;
-            text-align: center;
-            margin-top: 15px;
-        }
-    </style>
 </head>
-<body>
-
-<form method="POST">
-    <h2>Patient Login</h2>
-
-    <?php if ($error): ?>
-        <p class="error"><?= $error ?></p>
-    <?php endif; ?>
-
-    <input type="text" name="username" placeholder="Enter Username" required>
-    <input type="password" name="password" placeholder="Enter Password" required>
-
-    <button type="submit">Login</button>
-</form>
-
+<body class="login-page">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-brand">
+                <i class="fas fa-user"></i>
+                <h2>Praise Hospital</h2>
+                <span class="role-badge patient"><i class="fas fa-heartbeat"></i> Patient Portal</span>
+            </div>
+            <form method="POST" style="box-shadow: none; padding: 0; width: 100%;">
+                <?php if ($error): ?>
+                    <p class="error"><?= $error ?></p>
+                <?php endif; ?>
+                <input type="text" name="username" placeholder="Enter Username" required>
+                <input type="password" name="password" placeholder="Enter Password" required>
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+            <div class="form-link">
+                Don't have an account? <a href="register_patient.php">Register here</a>
+            </div>
+            <div style="text-align: center;">
+                <a href="index.php" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
