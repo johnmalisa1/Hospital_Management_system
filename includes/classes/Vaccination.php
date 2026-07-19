@@ -12,10 +12,10 @@ class Vaccination
         $this->database = $database;
     }
 
-    public function addVaccination(int $patientId, string $vaccineName, string $dateAdministered, string $notes): bool
+    public function addVaccination(int $patientId, string $vaccineName, string $dateAdministered, int $doseNumber): bool
     {
-        $statement = $this->connection()->prepare('INSERT INTO vaccinations (patient_id, vaccine_name, date_administered, notes) VALUES (?, ?, ?, ?)');
-        $statement->bind_param('isss', $patientId, $vaccineName, $dateAdministered, $notes);
+        $statement = $this->connection()->prepare('INSERT INTO vaccinations (patient_id, vaccine_name, vaccination_date, dose_number) VALUES (?, ?, ?, ?)');
+        $statement->bind_param('issi', $patientId, $vaccineName, $dateAdministered, $doseNumber);
         $result = $statement->execute();
         $statement->close();
         return $result;
@@ -33,10 +33,10 @@ class Vaccination
         return $vaccination;
     }
 
-    public function updateVaccination(int $vaccinationId, int $patientId, string $vaccineName, string $dateAdministered, string $notes): bool
+    public function updateVaccination(int $vaccinationId, int $patientId, string $vaccineName, string $dateAdministered, int $doseNumber): bool
     {
-        $statement = $this->connection()->prepare('UPDATE vaccinations SET patient_id = ?, vaccine_name = ?, date_administered = ?, notes = ? WHERE vaccination_id = ?');
-        $statement->bind_param('isssi', $patientId, $vaccineName, $dateAdministered, $notes, $vaccinationId);
+        $statement = $this->connection()->prepare('UPDATE vaccinations SET patient_id = ?, vaccine_name = ?, vaccination_date = ?, dose_number = ? WHERE vaccination_id = ?');
+        $statement->bind_param('issii', $patientId, $vaccineName, $dateAdministered, $doseNumber, $vaccinationId);
         $result = $statement->execute();
         $statement->close();
         return $result;
@@ -54,6 +54,14 @@ class Vaccination
     public function getAllVaccinations(): mysqli_result
     {
         return $this->connection()->query('SELECT v.*, p.name AS patient_name FROM vaccinations v JOIN patients p ON v.patient_id = p.patient_id');
+    }
+
+    public function getVaccinationsByPatient(int $patientId): mysqli_result
+    {
+        $statement = $this->connection()->prepare('SELECT v.*, p.name AS patient_name FROM vaccinations v JOIN patients p ON v.patient_id = p.patient_id WHERE v.patient_id = ? ORDER BY v.vaccination_date DESC');
+        $statement->bind_param('i', $patientId);
+        $statement->execute();
+        return $statement->get_result();
     }
 
     private function connection(): mysqli

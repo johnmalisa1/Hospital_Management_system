@@ -1,52 +1,78 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Doctor') {
-    header("Location: login.php");
+    header("Location: login_doctor.php");
     exit();
 }
 
+include "config/db.php";
+require_once "includes/classes/Appointment.php";
+require_once "includes/classes/Notification.php";
+
+$doctor_id = $_SESSION['user_id'];
+$appointment = new Appointment($db);
+$notification = new Notification($db);
+
+$todayTotal = $appointment->countTodayByDoctor($doctor_id);
+$todayCompleted = $appointment->countTodayByDoctorAndStatus($doctor_id, 'Completed');
+$todayScheduled = $appointment->countTodayByDoctorAndStatus($doctor_id, 'Scheduled');
+$todayRescheduled = $appointment->countTodayByDoctorAndStatus($doctor_id, 'Rescheduled');
+$patientsSeen = $appointment->countTodayPatientsSeen($doctor_id);
+$cancelledCount = $appointment->countTodayCancelledByDoctor($doctor_id);
+$unreadCount = $notification->countUnreadByUser($doctor_id);
+
+include "templates/header.php";
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Doctor Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body style="background: #F0F4F8; margin: 0; padding: 0;">
 
-<div class="dash-header">
-    <h2><i class="fas fa-hospital" style="margin-right: 8px;"></i> Praise Hospital</h2>
-    <div class="header-actions">
-        <span style="font-size: 14px; opacity: 0.9;"><i class="fas fa-user-md"></i> Welcome, Dr. <?= htmlspecialchars($_SESSION['username']) ?></span>
-        <a class="logout-link-header" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<body class="sidebar-page dashboard-bg">
+    <div class="main-overlay">
+
+        <div class="page-header">
+            <div>
+                <h2><i class="fas fa-user-md"></i> Doctor Dashboard</h2>
+                <p style="text-align:left; color: var(--text-light); margin-top: 4px;">Welcome, <strong style="color: var(--primary-dark);">Dr. <?= htmlspecialchars($_SESSION['username']) ?></strong></p>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-calendar-day"></i></div>
+                <h3>Today's Appointments</h3>
+                <p><?= $todayTotal ?></p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--accent);"><i class="fas fa-check-circle"></i></div>
+                <h3>Completed Today</h3>
+                <p><?= $todayCompleted ?></p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--warning);"><i class="fas fa-clock"></i></div>
+                <h3>Pending</h3>
+                <p><?= $todayScheduled ?></p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--danger);"><i class="fas fa-times-circle"></i></div>
+                <h3>Cancelled</h3>
+                <p><?= $cancelledCount ?></p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--primary);"><i class="fas fa-exchange-alt"></i></div>
+                <h3>Rescheduled</h3>
+                <p><?= $todayRescheduled ?></p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--accent);"><i class="fas fa-user-check"></i></div>
+                <h3>Patients Seen Today</h3>
+                <p><?= $patientsSeen ?></p>
+            </div>
+        </div>
+
     </div>
-</div>
 
-<div class="nav-cards">
-    <a href="modules/appointments/doctor_view.php" class="nav-card">
-        <i class="fas fa-calendar-check"></i>
-        <h3>My Appointments</h3>
-        <p>View and manage your appointments</p>
-    </a>
-    <a href="modules/lab_test_results/doctor_view.php" class="nav-card">
-        <i class="fas fa-microscope"></i>
-        <h3>Lab Results Issued</h3>
-        <p>View lab results you have issued</p>
-    </a>
-    <a href="modules/prescriptions/doctor_view.php" class="nav-card">
-        <i class="fas fa-prescription"></i>
-        <h3>Prescriptions Given</h3>
-        <p>View your prescriptions</p>
-    </a>
-    <a href="modules/notifications/doctor_view.php" class="nav-card">
-        <i class="fas fa-bell"></i>
-        <h3>My Notifications</h3>
-        <p>Check your notifications</p>
-    </a>
-</div>
-
-</body>
-</html>
+<?php include "templates/footer.php"; ?>

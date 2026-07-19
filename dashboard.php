@@ -107,7 +107,7 @@ new Chart(document.getElementById('lineChart'), {
         datasets: [{
             label: 'Total Count',
             data: [<?= $patients ?>, <?= $appointments ?>],
-            borderColor: '#4A90D9',
+            borderColor: '#dd1435',
             backgroundColor: 'rgba(74, 144, 217, 0.1)',
             tension: 0.3,
             fill: true,

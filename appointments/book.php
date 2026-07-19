@@ -24,7 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $appointment_date = $_POST['appointment_date'];
 
     if ($appointment->bookAppointment($patient_id, $doctor_id, $appointment_date)) {
-        // Redirect with success
+        require_once "../includes/classes/Notification.php";
+        $notificationService = new Notification($db);
+        $notificationService->addNotification($doctor_id, 'New appointment booked on ' . $appointment_date);
         header("Location: ../patient_dashboard.php?success=1");
         exit();
     } else {

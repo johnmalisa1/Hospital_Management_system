@@ -83,6 +83,18 @@ class Notification
         return $statement->get_result();
     }
 
+    public function countUnreadByUser(int $userId): int
+    {
+        $statement = $this->connection()->prepare(
+            'SELECT COUNT(*) AS total FROM notifications WHERE user_id = ? AND is_read = 0'
+        );
+        $statement->bind_param('i', $userId);
+        $statement->execute();
+        $row = $statement->get_result()->fetch_assoc();
+        $statement->close();
+        return (int) $row['total'];
+    }
+
     private function connection(): mysqli
     {
         return $this->database->getConnection();

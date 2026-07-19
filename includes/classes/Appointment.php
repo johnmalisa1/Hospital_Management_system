@@ -164,6 +164,84 @@ class Appointment
         return (int) $row['total'];
     }
 
+    public function countAppointmentsByDoctorAndStatus(int $doctorId, string $status): int
+    {
+        $statement = $this->getConnection()->prepare('SELECT COUNT(*) AS total FROM appointments WHERE doctor_id = ? AND status = ?');
+        $statement->bind_param('is', $doctorId, $status);
+        $statement->execute();
+        $row = $statement->get_result()->fetch_assoc();
+        $statement->close();
+        return (int) $row['total'];
+    }
+
+    public function countTodayByDoctor(int $doctorId): int
+    {
+        $statement = $this->getConnection()->prepare("SELECT COUNT(*) AS total FROM appointments WHERE doctor_id = ? AND DATE(appointment_date) = CURDATE()");
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        $row = $statement->get_result()->fetch_assoc();
+        $statement->close();
+        return (int) $row['total'];
+    }
+
+    public function countTodayByDoctorAndStatus(int $doctorId, string $status): int
+    {
+        $statement = $this->getConnection()->prepare("SELECT COUNT(*) AS total FROM appointments WHERE doctor_id = ? AND DATE(appointment_date) = CURDATE() AND status = ?");
+        $statement->bind_param('is', $doctorId, $status);
+        $statement->execute();
+        $row = $statement->get_result()->fetch_assoc();
+        $statement->close();
+        return (int) $row['total'];
+    }
+
+    public function countTodayPatientsSeen(int $doctorId): int
+    {
+        $statement = $this->getConnection()->prepare("SELECT COUNT(DISTINCT patient_id) AS total FROM appointments WHERE doctor_id = ? AND DATE(appointment_date) = CURDATE() AND status = 'Completed'");
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        $row = $statement->get_result()->fetch_assoc();
+        $statement->close();
+        return (int) $row['total'];
+    }
+
+    public function countTodayCancelledByDoctor(int $doctorId): int
+    {
+        $statement = $this->getConnection()->prepare("SELECT COUNT(*) AS total FROM appointments WHERE doctor_id = ? AND DATE(appointment_date) = CURDATE() AND status LIKE '%Cancelled%'");
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        $row = $statement->get_result()->fetch_assoc();
+        $statement->close();
+        return (int) $row['total'];
+    }
+
+    public function getPatientsByDoctor(int $doctorId): mysqli_result
+    {
+        $statement = $this->getConnection()->prepare(
+            'SELECT DISTINCT p.patient_id, p.name, p.gender, p.phone, a.appointment_date, a.status '
+            . 'FROM appointments a '
+            . 'JOIN patients p ON a.patient_id = p.patient_id '
+            . 'WHERE a.doctor_id = ? '
+            . 'ORDER BY a.appointment_date DESC'
+        );
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        return $statement->get_result();
+    }
+
+    public function getUpcomingByDoctor(int $doctorId): mysqli_result
+    {
+        $statement = $this->getConnection()->prepare(
+            'SELECT a.*, p.name AS patient_name '
+            . 'FROM appointments a '
+            . 'JOIN patients p ON a.patient_id = p.patient_id '
+            . 'WHERE a.doctor_id = ? AND a.appointment_date >= CURDATE() AND a.status IN ("Scheduled", "Rescheduled") '
+            . 'ORDER BY a.appointment_date ASC'
+        );
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        return $statement->get_result();
+    }
+
     public function getAppointmentId(): ?int
     {
         return $this->appointmentId;

@@ -43,7 +43,7 @@ include "../../templates/header.php";
             <input type="text" name="diagnosis" value="<?= $row['diagnosis'] ?>" required>
 
             <label>Date:</label>
-            <input type="date" name="date" value="<?= $row['date'] ?>" required>
+            <input type="date" name="date" value="<?= $row['diagnosis_date'] ?>" required>
 
             <label>Doctor:</label>
             <select name="doctor_id">

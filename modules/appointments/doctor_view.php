@@ -11,22 +11,24 @@ require_once "../../includes/classes/Appointment.php";
 $doctor_id = $_SESSION['user_id'];
 $appointment = new Appointment($db);
 $result = $appointment->getAppointmentsByDoctor($doctor_id);
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Doctor Appointments</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body style="background: #F0F4F8; margin: 0; padding: 20px;">
 
-<div style="max-width: 900px; margin: 0 auto;">
-    <a href="../../doctor_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-    <h2 style="text-align:center;"><i class="fas fa-calendar-check"></i> My Appointments</h2>
+<body class="sidebar-page">
+    <div class="main-overlay">
 
+    <div class="page-header">
+        <h2><i class="fas fa-calendar-check"></i> My Appointments</h2>
+    </div>
+
+    <?php if ($result->num_rows > 0): ?>
     <?php while ($row = $result->fetch_assoc()): ?>
     <div class="data-card">
         <p><strong><i class="fas fa-user" style="color: var(--primary);"></i> Patient:</strong> <?= htmlspecialchars($row['patient_name']) ?></p>
@@ -42,12 +44,22 @@ $result = $appointment->getAppointmentsByDoctor($doctor_id);
         </p>
         <div class="card-actions">
             <a class="btn-reschedule" href="../../appointments/reschedule.php?id=<?= $row['appointment_id'] ?>"><i class="fas fa-clock"></i> Reschedule</a>
-            <a class="btn-cancel" href="../../appointments/cancel.php?id=<?= $row['appointment_id'] ?>&by=doctor" onclick="return confirm('Cancel this appointment?')"><i class="fas fa-times"></i> Cancel</a>
-            <a class="btn-reschedule" href="../../appointments/complete.php?id=<?= $row['appointment_id'] ?>" style="background: var(--accent);"><i class="fas fa-check"></i> Complete</a>
+            <form method="POST" action="../../appointments/cancel.php" style="display:inline;" onsubmit="return confirm('Cancel this appointment?')">
+                <input type="hidden" name="appointment_id" value="<?= $row['appointment_id'] ?>">
+                <input type="hidden" name="cancelled_by" value="doctor">
+                <button type="submit" class="btn-cancel"><i class="fas fa-times"></i> Cancel</button>
+            </form>
+            <form method="POST" action="../../appointments/complete.php" style="display:inline;">
+                <input type="hidden" name="appointment_id" value="<?= $row['appointment_id'] ?>">
+                <button type="submit" class="btn-reschedule" style="background: var(--accent);"><i class="fas fa-check"></i> Complete</button>
+            </form>
         </div>
     </div>
     <?php endwhile; ?>
-</div>
+    <?php else: ?>
+    <p class="no-data">No appointments found.</p>
+    <?php endif; ?>
 
-</body>
-</html>
+    </div>
+
+<?php include "../../templates/footer.php"; ?>

@@ -89,6 +89,19 @@ class Patient extends User
         return $this->getConnection()->query('SELECT * FROM patients ORDER BY patient_id DESC');
     }
 
+    public function getPatientsByDoctor(int $doctorId): mysqli_result
+    {
+        $statement = $this->getConnection()->prepare(
+            'SELECT DISTINCT p.* FROM patients p '
+            . 'JOIN appointments a ON p.patient_id = a.patient_id '
+            . 'WHERE a.doctor_id = ? '
+            . 'ORDER BY p.name ASC'
+        );
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        return $statement->get_result();
+    }
+
     public function countPatients(): int
     {
         $result = $this->getConnection()->query('SELECT COUNT(*) AS total FROM patients');

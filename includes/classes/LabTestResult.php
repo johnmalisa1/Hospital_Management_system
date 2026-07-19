@@ -80,6 +80,24 @@ class LabTestResult
         return $statement->get_result();
     }
 
+    public function requestLabTest(int $patientId, int $testId, int $doctorId): bool
+    {
+        $resultText = 'Pending';
+        $statement = $this->connection()->prepare('INSERT INTO lab_test_results (patient_id, test_id, doctor_id, result_text, result_date) VALUES (?, ?, ?, ?, CURDATE())');
+        $statement->bind_param('iiis', $patientId, $testId, $doctorId, $resultText);
+        $result = $statement->execute();
+        $statement->close();
+        return $result;
+    }
+
+    public function getRequestedTestsByDoctor(int $doctorId): mysqli_result
+    {
+        $statement = $this->connection()->prepare('SELECT r.*, p.name AS patient_name, t.test_name FROM lab_test_results r JOIN patients p ON r.patient_id = p.patient_id JOIN lab_tests t ON r.test_id = t.test_id WHERE r.doctor_id = ? AND r.result_text = \'Pending\' ORDER BY r.result_date DESC');
+        $statement->bind_param('i', $doctorId);
+        $statement->execute();
+        return $statement->get_result();
+    }
+
     private function connection(): mysqli
     {
         return $this->database->getConnection();

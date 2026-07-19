@@ -17,7 +17,7 @@ include "../../templates/header.php";
             <th>Patient</th>
             <th>Vaccine</th>
             <th>Date</th>
-            <th>Notes</th>
+            <th>Dose</th>
             <th>Actions</th>
         </tr>
 
@@ -30,8 +30,8 @@ include "../../templates/header.php";
             <td><?= $row['vaccination_id'] ?></td>
             <td><?= $row['patient_name'] ?></td>
             <td><?= $row['vaccine_name'] ?></td>
-            <td><?= $row['date_administered'] ?></td>
-            <td><?= $row['notes'] ?></td>
+            <td><?= $row['vaccination_date'] ?></td>
+            <td><?= $row['dose_number'] ?></td>
             <td class="action-buttons">
                 <a href="edit.php?id=<?= $row['vaccination_id'] ?>" class="btn edit-btn">Edit</a>
                 <a href="delete.php?id=<?= $row['vaccination_id'] ?>" class="btn delete-btn" onclick="return confirm('Are you sure?')">Delete</a>

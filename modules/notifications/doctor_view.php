@@ -1,29 +1,33 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Doctor') {
-    header("Location: ../../login.php");
+    header("Location: ../../login_doctor.php");
     exit();
 }
 include "../../config/db.php";
-include "../../templates/header.php";
 require_once __DIR__ . '/../../includes/classes/Notification.php';
 
 $notification = new Notification($db);
 $user_id = $_SESSION['user_id'];
 $results = $notification->getNotificationsByUserId($user_id);
+
+include "../../templates/header.php";
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Notifications</title>
 </head>
-<body>
 
-<div class="main-content">
-    <a href="../../doctor_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-    <h2 style="text-align:center;"><i class="fas fa-bell"></i> Doctor Notifications</h2>
+<body class="sidebar-page">
+    <div class="main-overlay">
 
+    <div class="page-header">
+        <h2><i class="fas fa-bell"></i> Doctor Notifications</h2>
+    </div>
+
+    <?php if ($results->num_rows > 0): ?>
     <div class="table-responsive">
         <table>
             <thead>
@@ -52,8 +56,10 @@ $results = $notification->getNotificationsByUserId($user_id);
             </tbody>
         </table>
     </div>
-</div>
+    <?php else: ?>
+    <p class="no-data">No notifications found.</p>
+    <?php endif; ?>
+
+    </div>
 
 <?php include "../../templates/footer.php"; ?>
-</body>
-</html>

@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = $_POST['patient_id'];
     $vaccine_name = $_POST['vaccine_name'];
     $date_administered = $_POST['date_administered'];
-    $notes = $_POST['notes'];
+    $dose_number = intval($_POST['dose_number']);
 
-    $vaccination->addVaccination($patient_id, $vaccine_name, $date_administered, $notes);
+    $vaccination->addVaccination($patient_id, $vaccine_name, $date_administered, $dose_number);
     header("Location: view.php");
     exit();
 }
@@ -39,8 +39,8 @@ include "../../templates/header.php";
             <label>Date Administered:</label>
             <input type="date" name="date_administered" required>
 
-            <label>Notes:</label>
-            <input type="text" name="notes">
+            <label>Dose Number:</label>
+            <input type="number" name="dose_number" value="1" min="1" required>
 
             <button type="submit">Save</button>
         </form>

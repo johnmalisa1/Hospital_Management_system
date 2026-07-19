@@ -975,19 +975,32 @@ td {
 .data-card .card-actions {
     margin-top: 12px;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.data-card .card-actions form {
+    display: inline;
+    margin: 0;
+    padding: 0;
 }
 
 .btn-reschedule {
     background: var(--warning);
     color: white;
-    padding: 8px 16px;
+    padding: 4px 8px;
     border-radius: var(--radius-sm);
     text-decoration: none;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 11px;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
 }
 
 .btn-reschedule:hover {
@@ -999,12 +1012,19 @@ td {
 .btn-cancel {
     background: var(--danger);
     color: white;
-    padding: 8px 16px;
+    padding: 4px 8px;
     border-radius: var(--radius-sm);
     text-decoration: none;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 11px;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
 }
 
 .btn-cancel:hover {
@@ -1325,10 +1345,11 @@ td {
     }
 
     .data-card .card-actions {
-        flex-direction: column;
+        flex-wrap: nowrap;
     }
 
-    .data-card .card-actions a {
+    .data-card .card-actions a,
+    .data-card .card-actions button {
         text-align: center;
     }
 
